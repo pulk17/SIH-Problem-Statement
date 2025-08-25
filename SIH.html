@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Innovation Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0D0D0D;
+            --card-bg-color: #14141d;
+            --card-border-color: rgba(255, 255, 255, 0.1);
+            --text-color: #BDBDBD;
+            --title-color: #F2F2F2;
+            --accent-glow-start: #00F5D4;
+            --accent-glow-end: #9B5DE5;
+            --font-family: 'Inter', sans-serif;
+            --tag-bg-software: #9B5DE5;
+            --tag-bg-hardware: #F15BB5;
+            --tag-difficulty-easy: #00F5D4;
+            --tag-difficulty-medium: #FEE440;
+            --tag-difficulty-hard: #FF6B6B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 50%, rgba(125, 95, 255, 0.1), transparent 70%);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 2.5rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(90deg, var(--accent-glow-start), var(--accent-glow-end), #FEE440);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            font-weight: 300;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background: rgba(13, 13, 13, 0.5);
+            border-radius: 16px;
+            border: 1px solid var(--card-border-color);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-group label {
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-color);
+        }
+
+        .control-group select {
+            background-color: #1c1c28;
+            color: var(--title-color);
+            border: 1px solid var(--card-border-color);
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+            font-family: var(--font-family);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23BDBDBD' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+        }
+        
+        .control-group select:hover {
+            border-color: var(--accent-glow-start);
+        }
+        
+        .control-group select:focus {
+            outline: none;
+            border-color: var(--accent-glow-end);
+            box-shadow: 0 0 0 3px rgba(155, 93, 229, 0.3);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 2rem;
+        }
+
+        /* ### DEFINITIVE CARD FLIP STYLES ### */
+        .card {
+            background-color: transparent;
+            height: 450px;
+            perspective: 1500px;
+            cursor: pointer;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .card.is-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--card-border-color);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            padding: 1.8rem;
+            overflow-y: auto;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            padding: 2rem 1.8rem;
+        }
+        
+        .card-back::-webkit-scrollbar { width: 6px; }
+        .card-back::-webkit-scrollbar-track { background: transparent; }
+        .card-back::-webkit-scrollbar-thumb { background-color: var(--accent-glow-start); border-radius: 6px; }
+
+        /* Card Front Content */
+        .card-id {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.5);
+            z-index: 0;
+        }
+
+        .card-front .ministry {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-glow-start);
+            margin-bottom: 0.75rem;
+        }
+
+        .card-front .title {
+            font-size: 1.4rem;
+            color: var(--title-color);
+            font-weight: 600;
+            flex-grow: 1;
+            line-height: 1.4;
+        }
+
+        .card-front .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-front .tag {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 700;
+            color: #0D0D0D;
+            text-shadow: 0 0 2px rgba(0,0,0,0.2);
+        }
+        .tag.category-software { background-color: var(--tag-bg-software); }
+        .tag.category-hardware { background-color: var(--tag-bg-hardware); }
+        .tag.difficulty-easy { background-color: var(--tag-difficulty-easy); }
+        .tag.difficulty-medium { background-color: var(--tag-difficulty-medium); }
+        .tag.difficulty-hard { background-color: var(--tag-difficulty-hard); color: var(--title-color);}
+
+        .impact-score {
+            margin-top: auto;
+        }
+
+        .impact-score-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--title-color);
+        }
+        
+        .impact-score-bar-container {
+            width: 100%;
+            height: 10px;
+            background-color: rgba(0,0,0,0.3);
+            border-radius: 5px;
+        }
+
+        .impact-score-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-glow-start), var(--accent-glow-end));
+            border-radius: 5px;
+            box-shadow: 0 0 10px var(--accent-glow-start);
+        }
+
+        .view-details-prompt {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        /* Card Back Content */
+        .card-back h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--title-color);
+            margin: 1.5rem 0 0.75rem 0;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--card-border-color);
+            display: flex;
+            align-items: center;
+        }
+        .card-back h3:first-child {
+            margin-top: 0;
+        }
+        
+        .card-back .skills-list {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .card-back .skills-list li {
+            border-radius: 20px;
+            border: 1px solid var(--accent-glow-start);
+            padding: 0.3rem 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent-glow-start);
+            transition: all 0.2s ease;
+        }
+
+        .card-back .skills-list li:hover {
+            background-color: var(--accent-glow-start);
+            color: var(--bg-color);
+            box-shadow: 0 0 8px var(--accent-glow-start);
+            transform: translateY(-2px);
+        }
+        
+        .card-back .detail-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card-back .detail-list li {
+            padding-left: 1.2rem;
+            position: relative;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .card-back .detail-list li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: var(--accent-glow-start);
+            font-size: 0.8rem;
+            top: 4px;
+        }
+        
+        .icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            fill: var(--accent-glow-start);
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header h1 { font-size: 2.5rem; }
+            .header p { font-size: 1.1rem; }
+            .controls { flex-direction: column; gap: 1.2rem; }
+            .card-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Project Innovation Hub</h1>
+        <p>Explore, Innovate, and Solve Real-World Problems.</p>
+    </header>
+
+    <nav class="controls">
+        <div class="control-group">
+            <label for="sort-by">Sort By</label>
+            <select id="sort-by">
+                <option value="impact-hl">Impact (High to Low)</option>
+                <option value="impact-lh">Impact (Low to High)</option>
+                <option value="difficulty-eh">Difficulty (Easy to Hard)</option>
+                <option value="difficulty-he">Difficulty (Hard to Easy)</option>
+                <option value="potential-hl">Potential (High to Low)</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label for="filter-category">Filter by Category</label>
+            <select id="filter-category">
+                <option value="all">All</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label for="filter-domain">Filter by Domain</label>
+            <select id="filter-domain">
+                <option value="all">All</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label for="filter-ministry">Filter by Ministry</label>
+            <select id="filter-ministry">
+                <option value="all">All</option>
+            </select>
+        </div>
+    </nav>
+
+    <main class="card-grid" id="card-grid"></main>
+    
+    <script>
+        const cardGrid = document.getElementById('card-grid');
+        const sortBySelect = document.getElementById('sort-by');
+        const filterCategorySelect = document.getElementById('filter-category');
+        const filterDomainSelect = document.getElementById('filter-domain');
+        const filterMinistrySelect = document.getElementById('filter-ministry');
+
+        const icons = {
+            idea: `<svg class="icon" viewBox="0 0 24 24"><path d="M12 2C8.69 2 6 4.69 6 8c0 2.13.84 4.06 2.18 5.44C9.69 16.14 11.23 18 12 20c.77-2 2.31-3.86 3.82-6.56C17.16 12.06 18 10.13 18 8c0-3.31-2.69-6-6-6zm0 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"></path></svg>`,
+            skills: `<svg class="icon" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"></path></svg>`,
+            metrics: `<svg class="icon" viewBox="0 0 24 24"><path d="M12,4c-4.41,0-8,3.59-8,8s3.59,8,8,8s8-3.59,8-8S16.41,4,12,4z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8 s8,3.59,8,8S16.41,20,12,20z M13,15h-2v-6h2V15z M13,17h-2v-2h2V17z"></path><circle cx="12" cy="12" r="3"></circle></svg>`
+        };
+        
+        // ### COMPLETE & CLEANED JSON DATA ###
+        const challenges = [
+            {
+                "id": 1, "ministry": "Ministry of Development of North Eastern Region", "title": "Smart Community Health Monitoring and Early Warning System for Water-Borne Diseases in Rural Northeast India", "simplified": "Monitor community health & predict water-borne disease outbreaks in rural Northeast India.", "category": "Software", "domain": "MedTech / HealthTech", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Gamify Sanitation Reporting: An app where health workers earn points for uploading geo-tagged photos of clean water sources, analyzed by an AI", "AI-Powered ASHA Assistant: A voice-based AI tool for local health workers (ASHAs) that allows them to report symptoms in their local dialect, using NLP to flag outbreak clusters", "Smart Water-Testing Kits: Low-cost, IoT-enabled water quality kits that auto-upload pH, turbidity, and E. coli data to a central dashboard."],
+                "skills": ["AI/ML (NLP, Predictive Analytics)", "IoT Sensor Integration", "GIS Mapping", "Data Science (Epidemiological Modeling)", "Cloud (AWS/Azure)", "Mobile App Dev (Flutter)", "Voice-to-Text APIs"],
+                "impact": 9, "metrics": ["Reduction in disease outbreak response time by 40%", "Increase in early-stage case reporting by 50%."]
+            },
+            {
+                "id": 2, "ministry": "Ministry of Development of North Eastern Region", "title": "Smart Tourist Safety Monitoring & Incident Response System using Al, Geo-Fencing, and Blockchain-based Digital ID", "simplified": "Create a smart tourist safety monitoring & incident response system using AI and blockchain.", "category": "Software", "domain": "Travel & Tourism", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Guardian Angel Wearable: A low-cost, blockchain-linked wearable for tourists with a panic button and geo-fencing", "AI-Powered 'Safe Route' Planner: An app feature that analyzes real-time local news, social media sentiment, and police data to suggest the safest routes and times for travel", "Drone-Based First Responders: A system where a panic button activation also dispatches an autonomous drone to the tourist's location to provide a live video feed to authorities and deliver a basic first-aid kit."],
+                "skills": ["AI/ML (NLP, Pathfinding Algorithms)", "Blockchain (Hyperledger/Ethereum)", "GIS", "Mobile App Dev", "IoT (Wearables)", "Drone Control Systems (DJI SDK)", "Real-Time Databases (Firebase)"],
+                "impact": 8, "metrics": ["Decrease in tourist-related incidents by 25%", "Reduction in emergency response time in remote areas by 30%."]
+            },
+            {
+                "id": 3, "ministry": "Ministry of Development of North Eastern Region", "title": "Low-Cost smart transportation solution for Agri produce from remote farms to nearest motorable road in NER Region", "simplified": "Design a low-cost solution to transport agricultural produce from remote farms to roads.", "category": "Hardware", "domain": "Transportation & Logistics", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Autonomous Drone-Train Network: Automated, rugged drones traveling along a fixed cable \"rail\" system across difficult terrain", "All-Terrain Robotic Mules: Small, semi-autonomous, electric-powered robotic carriers that can follow a designated path or a human farmer through narrow trails", "Modular Gravity-Fed Ropeway: A low-tech, gravity and solar-powered ropeway system with smart baskets that can be easily assembled and disassembled by the local community."],
+                "skills": ["Mechanical Design (CAD)", "IoT (GPS, LoRaWAN)", "Robotics (ROS)", "Embedded Systems (ESP32/Raspberry Pi)", "Solar Power Systems", "Material Science (for lightweight/strong materials)"],
+                "impact": 9, "metrics": ["Reduction in post-harvest spoilage by 30%", "Increase in income for farmers in remote areas by 20%."]
+            },
+            {
+                "id": 4, "ministry": "Ministry of Fisheries, Animal Husbandry & Dairying", "title": "Image based breed recognition for cattle and buffaloes of India", "simplified": "Use image recognition to identify specific breeds of Indian cattle and buffaloes.", "category": "Software", "domain": "Agriculture & FoodTech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["'Cattle-pedia' App: Identifies breed from a photo and provides data on lineage, milk yield, and market value", "Livestock Insurance Automation: An insurtech platform where farmers get a policy by uploading a photo of their cattle; the AI verifies the breed and assesses health to generate a premium", "Smart Breeding Advisory: An app that uses breed identification to recommend optimal cross-breeding pairs from nearby farms to improve genetic traits."],
+                "skills": ["AI/ML (Computer Vision - CNNs, Transfer Learning)", "Mobile App Dev (Android/iOS)", "Cloud Storage (S3/Blob)", "Database Management (SQL/NoSQL)", "API Integration (for market/insurance data)"],
+                "impact": 7, "metrics": ["Increase in average milk yield by 15% in participating farms", "Reduction in insurance claim processing time by 60%."]
+            },
+            {
+                "id": 5, "ministry": "Ministry of Fisheries, Animal Husbandry & Dairying", "title": "Image based Animal Type Classification for cattle and buffaloes", "simplified": "Use image recognition to classify animals as either cattle or buffaloes.", "category": "Software", "domain": "Agriculture & FoodTech", "difficulty": "Easy", "potential": "Low",
+                "ideas": ["Automated Census Tool: A mobile tool for government agencies to automatically count and classify cattle vs. buffaloes from drone/vehicle camera footage", "Highway Animal Alert System: AI cameras on highways automatically detect if an animal is a cow or buffalo and send alerts to a central system to mitigate human-animal conflict", "Automated Feed Dispenser: A smart feeding system in large farms that uses cameras to identify the animal type and dispense a specific, pre-configured feed mix."],
+                "skills": ["AI/ML (Computer Vision - Classification Models)", "Mobile App Dev", "Edge Computing (for on-device processing)", "Drone Imagery Processing", "IoT"],
+                "impact": 6, "metrics": ["95% accuracy in automated livestock classification", "Reduction in manual census effort by 70%."]
+            },
+            {
+                "id": 6, "ministry": "Ministry of Fisheries, Animal Husbandry & Dairying", "title": "Development of a Digital Farm Management Portal for lmplementing Biosecurity ileasures in Pig and Poultry Farms", "simplified": "Build a digital portal for pig and poultry farms to manage and implement biosecurity measures.", "category": "Software", "domain": "Agriculture & FoodTech", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["Biosecurity Score Gamification: A portal assigning a dynamic \"Biosecurity Score\" to farms, unlocking benefits for high scores", "Disease Outbreak Forecaster: The portal aggregates anonymized data from multiple farms to train a model that predicts the probability of a disease outbreak in a specific region based on minor symptom patterns", "Smart Disinfection Gateway: IoT-enabled gates at farm entrances that automatically log vehicle entry and trigger a smart sprinkler system, recording the event in the portal's compliance log."],
+                "skills": ["Web Dev (React/Angular)", "Databases (PostgreSQL)", "Cloud (GCP/AWS)", "UI/UX", "IoT", "Predictive Analytics (Scikit-learn/TensorFlow)", "GIS"],
+                "impact": 7, "metrics": ["Reduction in disease-related mortality in livestock by 20%", "100% digital compliance tracking for biosecurity audits."]
+            },
+            {
+                "id": 7, "ministry": "Ministry of Fisheries, Animal Husbandry & Dairying", "title": "Development of a Digital Farm Management Portal for Monitoring aximum Residue Limits (MRL) and Antimicrobial Usage (AMU) in Livestock", "simplified": "Build a digital portal to monitor drug residue limits and antimicrobial usage in livestock.", "category": "Software", "domain": "Agriculture & FoodTech", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["AI-Powered Withdrawal Period Alerts: AI calculates and sends critical alerts about the mandatory \"withdrawal period\" for milk/meat after antibiotic use", "Blockchain-Based Traceability: Every antibiotic administration is logged on a blockchain. A QR code on the final product allows consumers to verify its safety and withdrawal period compliance", "Regional AMR Heatmap: The portal creates a live heatmap showing Antimicrobial Resistance (AMR) patterns in different regions, helping vets make more informed prescription choices."],
+                "skills": ["Web Dev (Node.js/Django)", "AI/ML (Predictive Modeling)", "Databases", "Cloud Infrastructure", "Blockchain", "QR Code Generation", "Data Visualization (D3.js)"],
+                "impact": 8, "metrics": ["Reduction in MRL violations in food products by 50%", "Decrease in the use of critical antimicrobials by 15%."]
+            },
+            {
+                "id": 8, "ministry": "Government of Punjab", "title": "Disaster Preparedness and Response Education System for Schools and Colleges", "simplified": "Create a system to educate school and college students on disaster preparedness and response.", "category": "Software", "domain": "Disaster Management", "difficulty": "Easy", "potential": "Medium",
+                "ideas": ["Interactive VR Disaster Drills: A VR simulation of local disasters where students complete tasks like finding exits or assembling a go-bag", "Augmented Reality (AR) Safety Scavenger Hunt: An app that overlays digital information onto the real school environment, guiding students to find fire extinguishers, first aid kits, and safe assembly points", "AI Chatbot for Emergency Procedures: A WhatsApp chatbot that can instantly answer questions like \"What do I do in an earthquake?\" with simple, actionable steps and diagrams."],
+                "skills": ["Web/App Dev", "Virtual Reality (Unity/Unreal Engine)", "Augmented Reality (ARKit/ARCore)", "Gamification", "UI/UX", "AI (NLP, Chatbots)"],
+                "impact": 7, "metrics": ["Increase in student disaster preparedness scores by 40% in post-training assessments", "Reduction in drill evacuation time by 20%."]
+            },
+            {
+                "id": 9, "ministry": "Government of Punjab", "title": "Gamified Environmental Education Platform for Schools and Colleges", "simplified": "Develop a gamified platform to teach environmental education in schools and colleges.", "category": "Software", "domain": "Smart Education", "difficulty": "Medium", "potential": "High",
+                "ideas": ["'FarmVille for the Environment': A simulation game where students' real-world eco-friendly actions improve their virtual town's health", "Inter-School 'Green League': A platform where schools compete based on collective actions like energy saved or waste recycled, with a live leaderboard", "AR Species Explorer: An app that allows students to discover and learn about local flora and fauna in their schoolyard by pointing their phone camera at plants and insects."],
+                "skills": ["Mobile App Dev (Kotlin/Swift)", "Gamification Mechanics", "AR/VR (Unity)", "UI/UX", "Backend (Python/Django)", "Image Recognition (for activity verification)", "IoT (for energy monitoring)"],
+                "impact": 7, "metrics": ["25% increase in student participation in school recycling programs", "Measurable reduction in school's energy consumption by 10%."]
+            },
+            {
+                "id": 10, "ministry": "Government of Punjab", "title": "Smart Crop Advisory System forSmall and Marginal Farmers", "simplified": "Build a smart crop advisory system for small and marginal farmers.", "category": "Software", "domain": "Agriculture & FoodTech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Voice-Based Advisory in Local Dialect: A WhatsApp AI assistant using voice notes in Punjabi to provide advice based on photos of pests", "Soil Health Card on Demand: Farmers can use a low-cost IoT sensor to measure soil NPK values, and the app provides instant recommendations for fertilizer dosage", "Market Linkage Platform: The system not only advises on what to grow but also connects farmers with potential buyers on a digital marketplace based on predicted harvest dates and quality."],
+                "skills": ["AI/ML (Computer Vision, NLP)", "IoT Sensor Integration", "Mobile App Dev", "Voice Tech (Text-to-Speech/Speech-to-Text)", "GIS", "Data Science (for crop yield prediction)"],
+                "impact": 9, "metrics": ["Increase in crop yield by 15% for small farmers", "Reduction in pesticide/fertilizer costs by 20%."]
+            },
+            {
+                "id": 11, "ministry": "Government of Punjab", "title": "Smart Curriculum Activity & Attendance App", "simplified": "Create a mobile app for managing school curriculum activities and student attendance.", "category": "Software", "domain": "Smart Education", "difficulty": "Easy", "potential": "Low",
+                "ideas": ["Project-Based Learning Tracker: The app focuses on tracking progress in project-based activities with photo/video uploads", "AI-Powered Feedback Assistant: Teachers photograph handwritten work, and the app's OCR provides suggestions on grammar and structure", "Extracurricular Skill Mapping: Students log activities like debate club, and the app maps these to skills like 'Public Speaking' to build a holistic profile."],
+                "skills": ["Mobile App Dev (React Native/Flutter)", "Databases (Firebase/PostgreSQL)", "Cloud Storage (S3)", "AI (OCR, basic NLP)", "API Development"],
+                "impact": 6, "metrics": ["Increase in student project submission rates by 20%", "Reduction in teacher feedback time by 15%."]
+            },
+            {
+                "id": 12, "ministry": "Government of Punjab", "title": "Automated Attendance System for Rural Schools", "simplified": "Develop an automated attendance system specifically designed for rural schools.", "category": "Software", "domain": "Smart Education", "difficulty": "Easy", "potential": "Medium",
+                "ideas": ["Offline-First Group Attendance via NFC: A teacher's app uses NFC for students to tap their ID cards, working entirely offline", "Facial Recognition on Low-Power Devices: A lightweight facial recognition model runs on a teacher's affordable smartphone, syncing data later", "QR Code-Based 'Check-in' System: Each student gets a laminated QR code ID, which the teacher's app scans in seconds."],
+                "skills": ["Mobile App Dev (Android Native)", "Edge AI (TensorFlow Lite for Facial Recognition)", "NFC/QR Code Libraries", "Offline-First Databases (SQLite)", "Background Sync Services"],
+                "impact": 7, "metrics": ["Reduction in time taken for attendance from 10 minutes to under 1 minute", "99.5% accuracy in attendance records."]
+            },
+            {
+                "id": 13, "ministry": "Government of Punjab", "title": "Real-Time Public Transport Tracking for Small Cities", "simplified": "Build a real-time public transport tracking system for small cities.", "category": "Software", "domain": "Transportation & Logistics", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["Crowdsourced Tracking Network: The app uses phone GPS of willing passengers to crowdsource the real-time bus location", "Smart Bus Stop Displays: Low-power e-ink displays at bus stops that sync periodically to show real-time arrival estimates", "WhatsApp ETA Bot: Users can send their bus stop number to a WhatsApp bot and get an instant reply with the next three bus arrival times."],
+                "skills": ["Mobile App Dev", "GIS (Mapbox/Leaflet)", "GPS", "Crowdsourcing Algorithms", "WebSocket (for real-time updates)", "IoT (for e-ink displays)", "Chatbot Frameworks (Dialogflow)"],
+                "impact": 8, "metrics": ["Improvement in on-time performance of public transport by 15%", "50% reduction in passenger wait-time uncertainty."]
+            },
+            {
+                "id": 14, "ministry": "Government of Punjab", "title": "Waste Segregation Monitoring System for Urban Local Bodies", "simplified": "Create a hardware system to monitor waste segregation for urban local bodies.", "category": "Hardware", "domain": "Clean & Green Tech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["AI-Powered 'Smart Bin' Lid: A retrofit lid with a camera that identifies incorrect waste types and plays an audio reminder", "Gamified Recycling Rewards: Bins with sensors weigh the correctly segregated waste and award points to a user's account via a QR code scan, redeemable for city services", "Dynamic Collection Routing: The system alerts sanitation departments when bins are 80% full, allowing for optimized collection routes that save fuel and time."],
+                "skills": ["IoT", "Sensors (Ultrasonic for fill-level, Load cells)", "AI (Computer Vision on Edge)", "Embedded Systems (Raspberry Pi/Jetson Nano)", "Solar Power", "GPS", "Cloud Dashboarding"],
+                "impact": 8, "metrics": ["Increase in waste segregation rate at the source from 20% to 60%", "Reduction in fuel consumption for waste collection trucks by 25%."]
+            },
+            {
+                "id": 15, "ministry": "Government of Punjab", "title": "Intelligent Pesticide Sprinkling System Determined by the Infection Level of a Plant", "simplified": "Develop a smart pesticide sprinkler that adjusts spraying based on plant infection levels.", "category": "Hardware", "domain": "Agriculture & FoodTech", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Drone-Based 'Seek and Spray': A drone with a multispectral camera creates a 'health map' and precisely sprays only infected plants", "Robotic Weeder & Sprayer Rover: An autonomous ground rover that navigates between crop rows, identifies pests up close, and applies a micro-dose of pesticide", "Smart Pheromone Trap Network: A grid of IoT-enabled traps creates a real-time pest density map, enabling predictive spraying in high-risk zones."],
+                "skills": ["IoT (LoRaWAN)", "AI (Computer Vision, Predictive Analytics)", "Robotics (ROS)", "Drones (UAV Control)", "Embedded Systems", "Multispectral Imaging", "GPS"],
+                "impact": 9, "metrics": ["Reduction in pesticide usage (liters per hectare) by 70%", "Increase in crop yield (tons per hectare) by 10% due to reduced pest damage."]
+            },
+            {
+                "id": 16, "ministry": "Government of Punjab", "title": "Automated Student Attendance Monitoring and Analytics System for Colleges", "simplified": "Build an automated system to monitor and analyze student attendance in colleges.", "category": "Software", "domain": "Smart Education", "difficulty": "Easy", "potential": "Low",
+                "ideas": ["Predictive Dropout Alerts: The system analyzes attendance patterns to flag students at high risk of dropping out for early intervention", "Automated Leave Application System: Students can apply for leave via an app, which uses AI to check for class/exam conflicts and forwards it to the right faculty for approval", "Engagement Correlation Engine: The system correlates attendance data with library entries and online resource usage to create a holistic 'student engagement score'."],
+                "skills": ["Web Dev (Django/Ruby on Rails)", "Data Analytics (Python with Pandas, Scikit-learn)", "AI/ML (Classification models)", "Database Management", "Push Notification Services"],
+                "impact": 6, "metrics": ["Early identification of 80% of students at risk of dropping out", "Automation of 90% of the leave approval process."]
+            },
+            {
+                "id": 17, "ministry": "Government of Punjab", "title": "Digital Platform for Centralized Alumni Data Management and Engagement", "simplified": "Create a digital platform for managing and engaging with a university's alumni network.", "category": "Software", "domain": "Smart Education", "difficulty": "Easy", "potential": "Low",
+                "ideas": ["AI-Powered Mentorship Matching: An AI algorithm matches current students with alumni mentors based on career goals and shared interests", "'Alumni Opportunity' Board: A dedicated section where alumni can post jobs, internships, or freelance projects specifically for students of their alma mater", "Global Alumni Heatmap: An interactive map visualizing the global distribution of alumni, allowing for localized networking and chapter creation."],
+                "skills": ["Web Dev", "AI/ML (Recommender Systems, NLP)", "Databases (Graph DB like Neo4j for connections)", "GIS", "Social Networking Features", "CRM Integration"],
+                "impact": 5, "metrics": ["Increase in alumni-student mentorship pairings by 300%", "50% increase in alumni engagement (logins, posts) year-over-year."]
+            },
+            {
+                "id": 18, "ministry": "Government of Punjab", "title": "Telemedicine Access for Rural Healthcare in Nabha", "simplified": "Provide telemedicine access for rural healthcare in the Nabha region.", "category": "Software", "domain": "MedTech / HealthTech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["'Health Kiosk' in a Box: Physical kiosks in villages with a trained operator and basic diagnostic tools for informed remote consultations", "Asynchronous 'Store-and-Forward' Consultations: Patients can record their symptoms and upload photos/reports for a doctor to review later, ideal for low-bandwidth situations", "Vernacular Voice-Based EMR: A system allowing local operators to update a patient's electronic medical record using voice commands in the local dialect."],
+                "skills": ["Mobile App Dev", "WebRTC (for video consults)", "Cloud", "IoT (for diagnostic devices)", "Data Security (HIPAA compliance)", "EMR/EHR Systems", "Speech-to-Text APIs"],
+                "impact": 9, "metrics": ["Reduction in travel time and cost for rural patients by 80%", "Increase in early diagnosis for common ailments by 40%."]
+            },
+            {
+                "id": 19, "ministry": "Government of Punjab", "title": "Digital Learning Platform for Rural School Students in Nabha", "simplified": "Develop a digital learning platform for rural school students in the Nabha region.", "category": "Software", "domain": "Smart Education", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Content Delivery via 'Data Buses': A mesh network where a mobile hotspot (on a bike) travels through villages, allowing students' tablets to download daily lessons offline", "Peer-to-Peer Learning Network: An app that allows students to share lessons and quizzes with nearby friends' devices using Bluetooth or Wi-Fi Direct, without needing internet", "AI-Powered Adaptive Quizzes: The platform generates personalized quizzes that adjust in difficulty based on a student's performance, working entirely offline and syncing results later."],
+                "skills": ["Web/App Dev", "Mesh Networking Protocols", "Offline-First Architecture (PouchDB/CouchDB)", "Content Delivery Networks (CDN)", "Peer-to-Peer (P2P) communication libraries", "AI on Edge"],
+                "impact": 8, "metrics": ["Achieve 90% daily content delivery to students in zero-internet zones", "Improve student test scores by 20%."]
+            },
+            {
+                "id": 20, "ministry": "Ministry of Railways", "title": "Development of indigenous contactless Integrated Track Monitoring Systems (ITMS) for Track Recording on Indian Railways", "simplified": "Develop an indigenous contactless system to monitor railway track conditions.", "category": "Hardware", "domain": "Smart Automation", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Acoustic and Vibration Analysis: AI listens to the 'sound' of the track from regular trains to detect anomalies like cracks or loose fittings", "Thermal Imaging for Joint Stress: Mount thermal cameras on trains to detect abnormal temperatures at rail joints, indicating potential failure", "Ground Penetrating Radar (GPR) for Ballast Health: A GPR system scans the gravel bed for water-logging or fouling, which are critical for track stability."],
+                "skills": ["Sensor Fusion (Accelerometers, Microphones, Thermal)", "IoT", "AI/ML (Signal Processing, Anomaly Detection)", "Edge Computing (NVIDIA Jetson)", "Big Data Platforms", "GPR Technology"],
+                "impact": 10, "metrics": ["Increase in early detection of critical track faults by 50%", "Reduction in track-related derailments by 15%."]
+            },
+            {
+                "id": 21, "ministry": "Ministry of Railways", "title": "AI based development of Laser based QR Code marking on 'track fittings on Indian Railways'.", "simplified": "Use AI and lasers to automatically mark QR codes on railway track fittings.", "category": "Hardware", "domain": "Transportation & Logistics", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Autonomous Rail Rover: A small, self-powered rover that travels the track at night, using computer vision to locate fittings and a laser to etch a unique QR code", "Drone-Based Marking System: A drone flies low over the track, identifies fittings with AI, and uses a precision-guided, low-power laser to mark them", "Smart Maintenance Tool Integration: A handheld tool used by maintenance crew that automatically identifies the fitting and etches a QR code upon successful inspection."],
+                "skills": ["AI (Computer Vision)", "Robotics (Navigation, Robotic Arm Control)", "Laser Engraving Tech", "Embedded Systems", "Drone Piloting and Control Systems", "Battery Technology"],
+                "impact": 8, "metrics": ["100% traceability of all major track fittings", "Reduction in maintenance verification time by 60%."]
+            },
+            {
+                "id": 22, "ministry": "Ministry of Railways", "title": "Maximizing Section Throughput Using Al-Powered Precise Train Traffic Control", "simplified": "Use AI for precise train traffic control to maximize the number of trains on a track section.", "category": "Software", "domain": "Transportation & Logistics", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["'Digital Twin' Simulation: A real-time 3D digital twin of the railway network where a reinforcement learning AI runs thousands of scenarios to find the optimal traffic flow", "Predictive Delay Management: The AI predicts potential delays based on real-time train performance and network congestion, then automatically re-routes or re-schedules other trains to minimize cascading effects", "Energy-Efficient Scheduling: The AI optimizes train speeds and schedules not just for throughput but also for minimizing energy consumption across the network."],
+                "skills": ["AI/ML (Reinforcement Learning, Predictive Modeling)", "Digital Twin Technology (NVIDIA Omniverse)", "Big Data Processing (Spark)", "Real-Time Data Streaming (Kafka)", "Simulation Software (AnyLogic)"],
+                "impact": 10, "metrics": ["Increase in track section throughput by 15% during peak hours", "Reduction in network-wide energy consumption by 5%."]
+            },
+            {
+                "id": 23, "ministry": "Ministry of Ayush", "title": "AyurSutra- Panchakarma Patient Management and therapy scheduling Software", "simplified": "Create a software for managing Panchakarma patients and scheduling therapies.", "category": "Software", "domain": "MedTech / HealthTech", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["AI-Optimized Therapy Scheduling: An AI algorithm creates the most efficient schedule for patients, therapists, and resources (like steam rooms)", "Personalized Post-Therapy Wellness Plan: The system generates a customized diet, yoga, and lifestyle plan for patients based on their therapy and progress, delivered via a mobile app", "Inventory Management for Herbal Oils: The software tracks the usage of specific oils and medicines, automatically predicting reorder points to prevent stockouts."],
+                "skills": ["Web Dev", "AI (Optimization Algorithms, Recommender Systems)", "Databases", "Cloud", "EMR/EHR", "Mobile App Dev", "Inventory Management Systems"],
+                "impact": 6, "metrics": ["Reduction in patient waiting time by 30%", "20% improvement in resource utilization (therapists, rooms)."]
+            },
+            {
+                "id": 24, "ministry": "Ministry of Ayush", "title": "Comprehensive Cloud-Based Practice Management & Nutrient Analysis Software for Ayurvedic Dietitians, Tailored for Ayurveda-Focused Diet Plans", "simplified": "Build a cloud-based practice management and diet analysis software for Ayurvedic dietitians.", "category": "Software", "domain": "MedTech / HealthTech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Prakriti-Based Recipe Generator: AI generates a weekly meal plan with recipes that balance a patient's doshas based on their Ayurvedic constitution (Prakriti)", "Digital 'Food Diary' with AI Analysis: Patients log meals via photos, and an AI identifies the food items and analyzes their likely impact on the patient's doshas", "Herb-Drug Interaction Checker: A feature that cross-references prescribed Ayurvedic herbs with allopathic medicines to flag potential adverse interactions."],
+                "skills": ["Web Dev", "AI/ML (Natural Language Generation, Computer Vision)", "Nutrition Databases", "Cloud", "EMR", "Drug Interaction Databases"],
+                "impact": 7, "metrics": ["Improvement in patient compliance with diet plans by 40%", "Reduction in time spent by dietitians on meal planning by 50%."]
+            },
+            {
+                "id": 25, "ministry": "Ministry of Ayush", "title": "E tongue for Dravya identification", "simplified": "Develop an \"E-tongue\" device to electronically identify Ayurvedic herbs.", "category": "Hardware", "domain": "MedTech / HealthTech", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Chemical Fingerprint Matching: An array of electrochemical sensors creates a unique 'taste signature' for a herb, which is then matched against a cloud database using an ML model", "Adulteration Detection: The E-tongue can detect common adulterants in herbal powders by identifying chemical signatures that deviate from the pure herb's profile", "Potency Quantification: The device analyzes the intensity of specific chemical markers to provide a quantitative score for the herb's potency or freshness."],
+                "skills": ["Sensor Technology (Electrochemical, Voltammetry)", "AI/ML (Pattern Recognition)", "Embedded Systems", "Chemistry", "Cloud Databases", "Spectroscopy"],
+                "impact": 8, "metrics": ["98% accuracy in identifying top 50 Ayurvedic herbs", "Detection of adulteration with over 90% confidence."]
+            },
+            {
+                "id": 26, "ministry": "Ministry of Ayush", "title": "Develop API code to integrate NAMASTE and or the International Classification of Diseases (ICD-11) via the Traditional Medicine Module 2 (TM2) into existing EMR systems...", "simplified": "Create an API to integrate traditional medicine classifications (NAMASTE, ICD-11 TM2) into EMR systems.", "category": "Software", "domain": "MedTech / HealthTech", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["AI-Powered Diagnostic Bridge: A middleware service that uses AI to suggest potential Ayurvedic diagnoses based on symptoms entered in a standard EMR", "Bi-directional Data Harmonization: The API not only pushes TM data into EMRs but can also pull EMR data and map it to TM classifications for research and analytics", "Automated Insurance Coding: The system can automatically suggest the relevant ICD-11-TM2 codes for insurance claims based on the practitioner's notes, simplifying billing."],
+                "skills": ["API Dev (REST/GraphQL)", "Healthcare Standards (FHIR, HL7)", "AI/ML (NLP)", "Data Mapping and ETL", "EMR Integration", "Medical Terminology (SNOMED CT)"],
+                "impact": 7, "metrics": ["Achieve seamless data exchange in 5 major EMR systems", "Reduce diagnostic coding errors by 30%."]
+            },
+            {
+                "id": 27, "ministry": "Ministry of Ayush", "title": "Develop a blockchain-based system for botanical traceability of Ayurvedic herbs...", "simplified": "Use blockchain for geo-tagged traceability of Ayurvedic herbs from farm to product.", "category": "Software", "domain": "Blockchain & Cybersecurity", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["'NFT for Herbs': Each authenticated, geo-tagged batch of herbs is minted as a Non-Fungible Token (NFT), allowing consumers to view its entire journey via a QR code", "Smart Contracts for Fair Trade: The blockchain platform can use smart contracts to automatically release payments to farmers once a batch is verified at the processing facility", "IoT-Monitored Supply Chain: IoT sensors track temperature and humidity during transit, writing this data to the blockchain to guarantee the herbs were stored correctly."],
+                "skills": ["Blockchain (Hyperledger Fabric)", "GIS", "IoT (Temperature/Humidity Sensors)", "Mobile App Dev", "Smart Contract (Solidity)", "Cryptography", "QR Code Technology"],
+                "impact": 8, "metrics": ["100% immutable traceability for every batch of herbs", "Increase in farmer income through assured fair-trade practices by 10%."]
+            },
+            {
+                "id": 28, "ministry": "Government of Jharkhand", "title": "Smart Classroom & Timetable Scheduler", "simplified": "Create a smart system to schedule classrooms and generate timetables automatically.", "category": "Software", "domain": "Smart Education", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["Energy-Efficiency Scheduling: The AI algorithm optimizes timetables to minimize energy consumption by grouping classes in specific building zones", "Student Preference Optimizer: The system allows students to input elective preferences and generates a timetable that maximizes the number of students getting their top-choice subjects", "Automated Substitute Teacher Assignment: When a teacher marks their absence, the system automatically finds and assigns a suitable substitute teacher with a free slot."],
+                "skills": ["Algorithm Design (Constraint Satisfaction, Genetic Algorithms)", "Web Dev", "Cloud", "IoT (for energy monitoring)", "Mobile App for notifications", "Calendar API integration"],
+                "impact": 7, "metrics": ["Reduction in building energy consumption by 15%", "Decrease in timetable clashes and student complaints by 90%."]
+            },
+            {
+                "id": 29, "ministry": "Government of Jharkhand", "title": "Authenticity Validator for Academia", "simplified": "Build a tool to validate the authenticity of academic documents.", "category": "Software", "domain": "Smart Education", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Decentralized Digital Diploma: Issue academic certificates as verifiable credentials on a decentralized identity network for instant, secure verification", "AI-Powered Forgery Detection: A tool that analyzes the digital and microscopic patterns of a scanned document to detect signs of photoshopping or forgery", "One-Click Background Check: An API that allows registered employers to perform one-click verification of a candidate's credentials against the secure, university-approved database."],
+                "skills": ["Blockchain", "Cryptography", "Web Dev", "Decentralized ID (DID)", "Self-Sovereign Identity (SSI)", "AI (Computer Vision, Steganalysis)", "Microservice Architecture"],
+                "impact": 8, "metrics": ["Eliminate academic certificate forgery", "Reduce background verification time for employers from weeks to seconds."]
+            },
+            {
+                "id": 30, "ministry": "Government of Jharkhand", "title": "Al-Based Crop Recommendation for Farmers", "simplified": "Develop an AI-based system to recommend suitable crops to farmers.", "category": "Software", "domain": "Agriculture & FoodTech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Market Demand Integration: The AI analyzes soil/weather data plus real-time market pricing and demand signals to recommend crops that are both agronomically sound and economically profitable", "Crop Rotation Planner: The system recommends a multi-year crop rotation schedule to improve soil health and reduce pest cycles", "Water-Usage Optimization: The AI recommends crops that offer the best yield and profitability for the amount of water available in a specific region, promoting water conservation."],
+                "skills": ["AI/ML (Predictive Analytics)", "Data Science", "GIS (for soil/weather maps)", "Mobile App Dev", "API integration (for market data)", "IoT (for soil moisture sensors)"],
+                "impact": 9, "metrics": ["Increase in farmer profitability by 20%", "25% improvement in water usage efficiency in agriculture."]
+            },
+            {
+                "id": 31, "ministry": "Government of Jharkhand", "title": "Crowdsourced Civic lssue Reporting and Resolution System", "simplified": "Create a crowdsourced system for citizens to report and track civic issues.", "category": "Software", "domain": "Clean & Green Tech", "difficulty": "Easy", "potential": "Low",
+                "ideas": ["Gamified Civic Duty: Citizens earn 'Civic Points' for reporting issues, redeemable for minor municipal perks", "AI-Powered Duplicate Detection: The system uses NLP and GIS to automatically merge duplicate reports of the same issue into a single, high-priority ticket", "Augmented Reality (AR) Visualization: An app for municipal workers that uses AR to overlay the exact reported locations of issues like underground pipe leaks."],
+                "skills": ["Mobile App Dev (Android/iOS)", "GIS (Leaflet)", "Cloud (Firebase)", "Gamification", "AI (NLP for duplicate detection)", "AR (ARKit/ARCore)", "Push Notification Services"],
+                "impact": 7, "metrics": ["Reduction in average issue resolution time by 30%", "Increase in citizen reporting engagement by 50%."]
+            },
+            {
+                "id": 32, "ministry": "Government of Jharkhand", "title": "Development of a Smart Digital Platform to Promote Eco & Cultural Tourism in Jharkhand", "simplified": "Build a digital platform to promote eco and cultural tourism in Jharkhand.", "category": "Software", "domain": "Travel & Tourism", "difficulty": "Easy", "potential": "Medium",
+                "ideas": ["AR-Powered Historical Guide: The app uses augmented reality to overlay stories, old photographs, or 3D reconstructions on historical sites", "AI Itinerary Planner: Users input their interests and duration, and an AI generates a personalized travel itinerary, including local artisans and eco-stays", "Offline-First Trail Maps: The app provides detailed trekking and nature trail maps that work offline using the phone's GPS, ensuring safety in remote areas."],
+                "skills": ["Web/App Dev", "GIS", "AR/VR (Unity, Vuforia)", "AI (Recommender Systems)", "3D Modeling (Blender)", "Offline-First Databases", "Content Management System (CMS)"],
+                "impact": 6, "metrics": ["Increase in tourist footfall to lesser-known sites by 20%", "40% increase in user engagement on the tourism platform."]
+            },
+            {
+                "id": 33, "ministry": "Ministry of Corporate Affairs", "title": "Al-Based Smart Allocation Engine for PM Internship Scheme", "simplified": "Build an AI-based engine to smartly allocate interns for the PM Internship Scheme.", "category": "Software", "domain": "Smart Automation", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Multi-Objective Optimization: The AI engine optimizes allocation based on student preference, skill-match, location, and a 'diversity score'", "'Best Fit' Justification: The system not only provides the match but also generates a short summary explaining *why* a particular intern is a good fit for a project", "Dynamic Re-allocation: If an intern drops out, the engine can instantly re-run the optimization to suggest the best possible replacement from the available pool."],
+                "skills": ["AI/ML (Optimization Algorithms, NLP)", "Web Dev", "Databases (SQL)", "Data Analytics (Python)", "Cloud Deployment", "API Integration"],
+                "impact": 7, "metrics": ["Improvement in match satisfaction scores from both interns and organizations by 25%", "Reduction in allocation processing time by 80%."]
+            },
+            {
+                "id": 34, "ministry": "Ministry of Corporate Affairs", "title": "Al-Based Internship Recommendation Engine for PM Internship Scheme", "simplified": "Build an AI-based recommendation engine for the PM Internship Scheme.", "category": "Software", "domain": "Smart Education", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Skill Gap Analysis: The engine recommends internships that not only match a student's current skills but also strategically fill identified gaps in their profile", "Career Path Simulation: The tool shows students how different internships could lead to different long-term career paths based on historical data", "Peer-to-Peer Recommendations: The system highlights internships that were highly rated by students with similar academic profiles and career goals."],
+                "skills": ["AI/ML (Recommender Systems, Collaborative Filtering)", "Web Dev", "Data Science", "Graph Databases (for skill connections)", "NLP (for resume parsing)"],
+                "impact": 7, "metrics": ["Increase in internship application-to-acceptance ratio by 20%", "30% increase in students applying for 'skill-gap' filling roles."]
+            },
+            {
+                "id": 35, "ministry": "Ministry of Corporate Affairs", "title": "Sentiment analysis of comments received through E-consultation module", "simplified": "Perform sentiment analysis on public comments received through an e-consultation module.", "category": "Software", "domain": "Miscellaneous", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["Topic-Specific Emotion Analysis: The tool identifies key topics (e.g., 'Clause 5.1') and analyzes the specific emotions (confusion, anger, support) associated with each", "'Constructive Feedback' Identifier: An NLP model that is trained to identify and flag comments that, regardless of sentiment, offer concrete, actionable suggestions", "Demographic Sentiment Correlation: The system analyzes if sentiment on specific topics correlates with demographic data (if available), providing deeper insights for policymakers."],
+                "skills": ["AI/ML (NLP, Sentiment Analysis, Topic Modeling)", "Data Visualization (D3.js, Tableau)", "Python (NLTK, SpaCy)", "Backend Dev (Flask/Django)", "Text Processing"],
+                "impact": 6, "metrics": ["90% accuracy in classifying comment sentiment and primary emotion", "Automatic generation of a top-5 actionable feedback summary report."]
+            },
+            {
+                "id": 36, "ministry": "Ministry of Earth Sciences (MoES)", "title": "Development of Sensor for Detection Of Microplastics", "simplified": "Develop a sensor for detecting microplastics in water.", "category": "Hardware", "domain": "Miscellaneous", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Handheld Raman Spectrometer: A portable device using Raman spectroscopy and a cloud-based ML model to identify polymer type and concentration in real-time", "'Fluorescent Dye' Method: A sensor that uses a specific dye that binds to microplastics, then measures the fluorescence to quantify their concentration", "AI-Powered Microscopic Imaging: A portable digital microscope captures images of a water sample, and an onboard CV model identifies and counts microplastic particles automatically."],
+                "skills": ["Sensor Technology (Spectroscopy, Optics)", "Chemistry", "AI/ML (Pattern Recognition)", "Embedded Systems (ESP32)", "Material Science", "Cloud Computing", "Mobile App Dev"],
+                "impact": 9, "metrics": ["Ability to detect microplastics down to 1 micron in size in under 5 minutes", "95% accuracy in polymer type identification."]
+            },
+            {
+                "id": 37, "ministry": "Ministry of Earth Sciences (MoES)", "title": "Development of a low-cost camera-based automated beach sand grain size mapping system", "simplified": "Create a low-cost, camera-based system to automatically map beach sand grain size.", "category": "Hardware", "domain": "Miscellaneous", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Focus Stacking Microscope: A portable digital microscope uses focus stacking to create a sharp image of a sand sample, with an onboard AI calculating grain size distribution", "Laser Diffraction Analyzer: A device that shines a laser through a sample of sand suspended in water and analyzes the diffraction pattern to determine grain size", "Smartphone-Based System: A simple attachment for a smartphone camera that, combined with an app, allows for on-the-spot analysis of sand grain size using image processing."],
+                "skills": ["AI (Computer Vision)", "Embedded Systems", "Optics", "Mechanical Design (CAD)", "3D Printing", "Python (OpenCV)", "Geology"],
+                "impact": 7, "metrics": ["Reduce the time for sand grain analysis from hours to minutes", "Achieve grain size distribution results with 90% correlation to traditional sieve analysis."]
+            },
+            {
+                "id": 38, "ministry": "Ministry of Earth Sciences (MoES)", "title": "Blockchain-Based Blue Carbon Registry and MRV System", "simplified": "Develop a blockchain-based registry and verification system for blue carbon projects.", "category": "Software", "domain": "Clean & Green Tech", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["IoT-Verified Carbon Sequestration: IoT sensors monitor mangrove health (salinity, growth) and this real-world data is fed into a smart contract to automatically issue carbon credits", "Satellite Imagery Oracle: A decentralized oracle service that uses satellite imagery analysis to verify changes in blue carbon ecosystem area (e.g., mangrove growth), triggering smart contract actions", "Community DAO for Project Governance: The registry is governed by a Decentralized Autonomous Organization (DAO), allowing local communities to vote on project validation and fund allocation."],
+                "skills": ["Blockchain (Ethereum/Hyperledger)", "IoT", "GIS (Satellite Imagery Analysis)", "Web Dev", "Smart Contracts (Solidity)", "Oracles (Chainlink)", "DAO Frameworks"],
+                "impact": 8, "metrics": ["Ensure 100% transparent and auditable carbon credit issuance", "Reduce MRV (Monitoring, Reporting, and Verification) costs by 40%."]
+            },
+            {
+                "id": 39, "ministry": "Ministry of Earth Sciences (MoES)", "title": "Integrated Platform for Crowdsourced Ocean Hazard Reporting and Social Media Analytics", "simplified": "Create a platform for crowdsourced ocean hazard reporting and social media analytics.", "category": "Software", "domain": "Disaster Management", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["AI-Powered Report Verification: The platform's AI analyzes and cross-references social media posts with app reports to automatically elevate an alert's credibility", "Rip Current Prediction Model: The system uses bathymetric data, wave models, and crowdsourced reports to train an AI model that predicts high-risk locations for rip currents", "Gamified Reporting: Users who submit verified reports earn points and badges, encouraging active and accurate community participation."],
+                "skills": ["Web/App Dev", "GIS", "AI (NLP, Computer Vision for image analysis)", "Data Analytics", "Crowdsourcing", "Predictive Modeling", "Social Media APIs (Twitter)"],
+                "impact": 8, "metrics": ["Increase the speed of verified hazard alerts to the public by 50%", "Generate rip current forecast maps with 70% accuracy."]
+            },
+            {
+                "id": 40, "ministry": "Ministry of Earth Sciences (MoES)", "title": "FloatChat - AI-Powered Conversational Interface for ARGO Ocean Data Discovery and Visualization", "simplified": "Build an AI chatbot to help users discover and visualize ARGO ocean data.", "category": "Software", "domain": "Miscellaneous", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Natural Language Data Query: Allows users to ask complex questions in plain English like, 'Show me a temperature anomaly chart for the Indian Ocean'", "'Data Story' Generator: A user can ask the chatbot to 'tell me a story' about a specific ocean phenomenon, and the AI will generate a narrative with accompanying charts and maps", "Proactive Insights Bot: The chatbot can be configured to monitor data streams and proactively send an alert to a researcher if it detects a significant anomaly (e.g., sudden ocean warming)."],
+                "skills": ["AI (NLP, Chatbots, NLU - Rasa/Dialogflow)", "Data Visualization Libraries (D3.js, Plotly)", "Web Dev (React)", "Data APIs", "Python (Pandas, GeoPandas)"],
+                "impact": 7, "metrics": ["Reduce the time for non-expert users to find and visualize relevant ocean data by 90%", "Increase usage of ARGO data by 30%."]
+            },
+            {
+                "id": 41, "ministry": "Ministry of Earth Sciences (MoES)", "title": "AI-Driven Unified Data Platform for Oceanographic, Fisheries, and Molecular Biodiversity Insights", "simplified": "Create a unified AI platform for insights from oceanographic, fisheries, and biodiversity data.", "category": "Software", "domain": "Renewable / Sustainable Energy", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Predictive Ecological Modeling: An AI platform that can run simulations to predict the impact of climate events on fish migration and plankton blooms", "Illegal Fishing Hotspot Prediction: The AI analyzes vessel tracking and oceanographic data to predict where illegal fishing is most likely to occur", "Aquaculture Site Suitability Mapper: The platform uses AI to identify the most sustainable locations for new aquaculture farms by modeling environmental factors."],
+                "skills": ["AI/ML (Time-series analysis, Predictive modeling)", "Big Data (Hadoop/Spark)", "Data Science", "Cloud (Data Lakes)", "GIS", "Data Visualization (Tableau)", "Bioinformatics Tools"],
+                "impact": 9, "metrics": ["Generate actionable illegal fishing alerts with 75% accuracy", "Reduce time for aquaculture site assessment by 60%."]
+            },
+            {
+                "id": 42, "ministry": "Ministry of Earth Sciences (MoES)", "title": "Identifying Taxonomy and Assessing Biodiversity from eDNA Datasets", "simplified": "Use software to identify taxonomy and assess biodiversity from eDNA datasets.", "category": "Software", "domain": "Miscellaneous", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["eDNA 'Dark Matter' Discovery: Use unsupervised machine learning to cluster unknown DNA sequences from environmental DNA, helping to discover potentially new species", "Real-Time Biodiversity Index: A tool that processes eDNA sequence data and calculates a real-time biodiversity score for a marine area, allowing for rapid environmental impact assessment", "Invasive Species Alert System: The software continuously scans eDNA data from ports and harbors for the genetic signatures of known invasive species, providing an early warning."],
+                "skills": ["Bioinformatics (BLAST, QIIME 2)", "AI/ML (Unsupervised Learning, Clustering)", "Data Science", "High-Performance Computing (HPC)", "Python (Biopython)", "Genomics Databases (NCBI)"],
+                "impact": 8, "metrics": ["Accelerate species identification from eDNA samples by 10x compared to manual methods", "Detect invasive species presence with 99% accuracy."]
+            },
+            {
+                "id": 43, "ministry": "Ministry of Earth Sciences (MoES)", "title": "Embedded Intelligent Microscopy System for Identification and Counting of Microscopic Marine Organisms", "simplified": "Develop an intelligent microscopy system to auto-identify and count microscopic marine organisms.", "category": "Hardware", "domain": "Smart Automation", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Holographic Imaging Microscope: Use lens-free holographic imaging to capture 3D information about plankton, analyzed by a 3D CNN for more accurate identification", "'Lab-on-a-Chip' Flow Cytometer: A microfluidic chip that channels organisms one-by-one past a laser and sensor, using light scatter patterns and AI to classify them at high speed", "Autonomous Underwater Microscope: A deployable instrument that can perform this analysis in-situ at various depths and transmit the data wirelessly."],
+                "skills": ["AI (Computer Vision - CNNs)", "Robotics", "Embedded Systems (Jetson Nano)", "Optics", "Holography", "Microfluidics", "Mechanical Design"],
+                "impact": 9, "metrics": ["Achieve >95% accuracy in identifying and counting key plankton species", "Process water samples 50x faster than a human technician."]
+            },
+            {
+                "id": 44, "ministry": "Government of Odisha", "title": "Al-Powered Crop Yield Prediction and Optimization", "simplified": "Use AI to predict and optimize crop yields.", "category": "Software", "domain": "Agriculture & FoodTech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Hyper-Local Yield Prediction: Combine satellite imagery, IoT weather stations, and farmer inputs to predict yield for a specific farm and suggest micro-adjustments", "Insurance Claim Automation: The AI's yield prediction can be used as a trusted, third-party oracle to automatically trigger payouts for crop insurance claims in case of widespread failure", "Carbon Farming Estimator: The tool can predict how much additional carbon a farmer could sequester in their soil by adopting regenerative practices, opening up new revenue from carbon credits."],
+                "skills": ["AI/ML (Computer Vision, Time-series)", "Data Science", "GIS (Satellite Imagery)", "IoT", "Mobile App Dev", "Predictive Analytics"],
+                "impact": 9, "metrics": ["Improve yield prediction accuracy to within 10% of actuals at the farm level", "Increase farmer adoption of optimized practices by 30%."]
+            },
+            {
+                "id": 45, "ministry": "Government of Odisha", "title": "Blockchain-Based Supply Chain Transparency for Agricultural Produce", "simplified": "Use blockchain to create a transparent supply chain for agricultural produce.", "category": "Software", "domain": "Agriculture & FoodTech", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Consumer-Facing Storytelling: A QR code on produce opens a webpage showing the supply chain journey and a video of the farmer who grew it", "Automated Quality Control Log: IoT sensors monitoring temperature and humidity during transit write data to the blockchain, providing an immutable record of storage conditions", "Smart Contracts for Export Documentation: Automate the generation and verification of export documents between farmers, logistics partners, and customs."],
+                "skills": ["Blockchain", "IoT", "Mobile App Dev", "Smart Contracts", "Web Dev", "QR Code Technology", "GPS Tracking"],
+                "impact": 8, "metrics": ["Reduce food fraud and mislabeling by 90%", "Increase consumer trust and willingness to pay a premium for verified produce by 15%."]
+            },
+            {
+                "id": 46, "ministry": "Government of Odisha", "title": "Smart Waste Segregation and Recycling System", "simplified": "Build a smart waste segregation and recycling system.", "category": "Hardware", "domain": "Clean & Green Tech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Robotic Sorting Arm: A computer vision model identifies waste on a conveyor belt, and a high-speed robotic arm picks and sorts items into bins", "'Pay-As-You-Throw' Smart Bins: Household bins that weigh the amount of unsegregated waste and charge a small fee, while offering rewards for properly segregated recyclables", "AI-Powered Waste Composition Analysis: A camera inside a collection truck analyzes the waste being dumped to provide city-level data on segregation effectiveness and recycling potential."],
+                "skills": ["IoT", "AI (Computer Vision)", "Robotics (Robotic Arm)", "Embedded Systems", "Sensors (Load Cells, IR)", "Mechanical Design", "Cloud Analytics"],
+                "impact": 8, "metrics": ["Increase the purity of sorted recyclables to >95%", "Reduce the amount of recyclable waste going to landfills by 40%."]
+            },
+            {
+                "id": 47, "ministry": "Government of Odisha", "title": "Disaster Response Drone for Remote Areas", "simplified": "Develop a disaster response drone for remote areas.", "category": "Hardware", "domain": "Robotics and Drones", "difficulty": "Hard", "potential": "High",
+                "ideas": ["'Drone Swarm' Mapping: A primary drone acts as a hub, while a swarm of smaller drones disperses to quickly map a large disaster area and identify survivors with thermal cameras", "Last-Mile Medical Delivery: Drones equipped with cooled pods for delivering critical supplies like snake anti-venom or blood packs to inaccessible locations", "Pop-up Communication Network: Drones that act as flying communication towers, creating an ad-hoc LTE/Wi-Fi network for rescue workers on the ground."],
+                "skills": ["Drones (UAVs)", "AI (Computer Vision, Swarm Intelligence)", "Robotics", "Thermal Imaging", "GIS", "Mesh Networking", "Satellite Communication"],
+                "impact": 10, "metrics": ["Reduce time to map a 1 sq km disaster area by 80%", "Enable delivery of medical supplies to remote zones within 30 minutes of request."]
+            },
+            {
+                "id": 48, "ministry": "Government of Odisha", "title": "Gamified Learning Platform for Rural Education", "simplified": "Create a gamified learning platform for rural education.", "category": "Software", "domain": "Smart Education", "difficulty": "Medium", "potential": "High",
+                "ideas": ["Story-Based SMS Learning: An interactive story-based learning game that works entirely over SMS for areas with no internet", "Voice-Based Learning for Illiterate Parents: An IVR system where parents can access audio lessons and quizzes in their local dialect to help their children with their studies", "Inter-Village 'Knowledge League': A gamified quiz platform where villages compete against each other, fostering a community learning environment."],
+                "skills": ["Mobile App Dev", "Gamification", "EdTech", "SMS/IVR APIs (Twilio)", "Voice Tech (TTS/STT)", "Offline-First Design", "Game Design"],
+                "impact": 7, "metrics": ["Improve literacy and numeracy scores in rural students by 20%", "Achieve 50% parent engagement on the voice-based platform."]
+            },
+            {
+                "id": 49, "ministry": "Government of Odisha", "title": "Al-Driven Public Health Chatbot for Disease Awareness", "simplified": "Build an AI-driven public health chatbot for disease awareness.", "category": "Software", "domain": "MedTech / HealthTech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Local Dialect Voicebot: The chatbot works via a standard phone call in the local Odia dialect, answering questions and providing a list of nearby clinics", "Myth-Busting Feature: The chatbot is trained to identify and gently correct common health-related myths and misinformation circulating in the community", "Proactive Health Alerts: The chatbot can send out proactive voice/text messages to registered users about seasonal disease risks (like Dengue) and preventative measures."],
+                "skills": ["AI (NLP, Chatbots - Rasa/Dialogflow)", "Voice Tech (TTS/STT)", "App Dev", "GIS", "Public Health Data Integration"],
+                "impact": 7, "metrics": ["Reduce the burden of common queries on health hotlines by 60%", "Increase preventative health measure adoption by 25%."]
+            },
+            {
+                "id": 50, "ministry": "Government of Odisha", "title": "Smart Traffic Management Systern for Urban Congestion", "simplified": "Design a smart traffic management system to reduce urban congestion.", "category": "Software", "domain": "Transportation & Logistics", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Adaptive Traffic Signal Control: A reinforcement learning AI agent uses live camera feeds to actively control traffic light timing to dissolve bottlenecks", "Emergency Vehicle Preemption: The system automatically turns signals green along the path of an approaching ambulance or fire truck", "Pollution-Based Rerouting: The system integrates air quality data and can reroute traffic away from areas experiencing high pollution levels to help disperse pollutants."],
+                "skills": ["AI (Computer Vision, Reinforcement Learning)", "IoT (Traffic Cameras)", "Big Data", "Simulation", "Edge Computing", "GIS", "Air Quality Sensor Integration"],
+                "impact": 9, "metrics": ["Reduce average commute time during peak hours by 20%", "Decrease emergency vehicle response time by 30%."]
+            },
+            {
+                "id": 51, "ministry": "Government of Odisha", "title": "Renewable Energy Monitoring System for Microgrids", "simplified": "Create a system to monitor renewable energy microgrids.", "category": "Hardware", "domain": "Renewable / Sustainable Energy", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Predictive Maintenance Alerts: An AI analyzes sensor data from solar panels and batteries to predict potential failures before they happen", "AI-Powered Load Balancing: The system forecasts energy production (e.g., based on weather) and demand, and intelligently switches between grid, solar, and battery power to ensure stability and cost savings", "Peer-to-Peer Energy Trading: A blockchain-based platform allowing homes with excess solar power to sell it directly to their neighbors within the microgrid."],
+                "skills": ["IoT", "Sensors", "AI/ML (Predictive Analytics, Forecasting)", "Embedded Systems", "Power Electronics", "Cloud Dashboards", "Blockchain (for P2P trading)"],
+                "impact": 8, "metrics": ["Reduce microgrid downtime by 30% through predictive maintenance", "Increase the utilization of generated renewable energy by 15%."]
+            },
+            {
+                "id": 52, "ministry": "Government of Odisha", "title": "AR-Based Cultural Heritage Preservation Platform", "simplified": "Develop an AR-based platform for cultural heritage preservation.", "category": "Software", "domain": "Heritage & Culture", "difficulty": "Medium", "potential": "High",
+                "ideas": ["'Time Traveler' Mode: Users at a heritage site can use their phone to see an AR overlay of how the site looked in different historical eras", "'Living Murals' Experience: Pointing a phone at a faded mural or sculpture triggers an AR animation that restores it to its original colors and tells its story", "Gamified Artifact Hunt: An AR game where visitors have to find specific artifacts within a site, with the app providing historical clues and context for each find."],
+                "skills": ["Augmented Reality (ARKit/ARCore, Unity)", "3D Modeling (Photogrammetry, Blender)", "Mobile App Dev", "GIS", "Content Management System", "Storytelling/Scripting"],
+                "impact": 7, "metrics": ["Increase tourist engagement time at heritage sites by 50%", "Digitize and preserve at least 10 major cultural sites in the first year."]
+            },
+            {
+                "id": 53, "ministry": "Ministry of Consumer Affairs, Food & Public Distribution", "title": "Improved Onion storage technology for enhancing shelf life of onions", "simplified": "Improve onion storage technology to enhance shelf life.", "category": "Hardware", "domain": "Agriculture & FoodTech", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Automated Curing & Dormancy Control: A smart storage unit that automates the 'curing' process with controlled airflow and then keeps onions in deep dormancy", "Ethylene Sensing and Scrubbing: An IoT system that continuously monitors for ethylene gas (a sprouting trigger) and automatically activates a scrubbing system to remove it", "Computer Vision for Spoilage Detection: Internal cameras use a CV model to detect and flag early signs of rot, allowing for targeted removal before it spreads."],
+                "skills": ["IoT (Sensors for temp, humidity, ethylene)", "Mechanical Design (HVAC)", "Agri Science", "Embedded Systems", "AI (Computer Vision)", "Actuator Control Systems"],
+                "impact": 10, "metrics": ["Increase average onion shelf life from 3 months to 6 months", "Reduce post-harvest losses due to spoilage by 50%."]
+            },
+            {
+                "id": 54, "ministry": "Ministry of Consumer Affairs, Food & Public Distribution", "title": "Automated High-Current Short-Circuit Test System for MCB to comply with IEC 60898-1:2015", "simplified": "Automate high-current short-circuit testing for MCBs.", "category": "Hardware", "domain": "Smart Automation", "difficulty": "Hard", "potential": "Low",
+                "ideas": ["Robotic Test Bench: A fully robotic system that picks an MCB, places it in the test fixture, conducts the test, and sorts it into 'pass' or 'fail' bins", "High-Speed Data Acquisition: A system that captures the current and voltage waveforms during the test at a high resolution to analyze the MCB's tripping characteristics in detail", "Digital Twin for Test Simulation: A software model that simulates the test, predicting potential failure points before the physical test is even run, saving time and resources."],
+                "skills": ["Electrical Engineering (High-Current)", "Robotics (6-axis arm)", "Embedded Systems", "PLC Programming", "Data Acquisition (DAQ) Systems", "Computer Vision (for result verification)"],
+                "impact": 6, "metrics": ["Increase testing throughput by 5x", "Eliminate human error and safety risks from the testing process."]
+            },
+            {
+                "id": 55, "ministry": "Ministry of Consumer Affairs, Food & Public Distribution", "title": "Automated Specimen Preparation System for testing of Cable samples as per IS 10810 and IS 7098.", "simplified": "Automate specimen preparation for testing cable samples.", "category": "Hardware", "domain": "Miscellaneous", "difficulty": "Hard", "potential": "Low",
+                "ideas": ["Laser-Based Cable Stripping: Use a high-precision laser guided by a computer vision system to strip insulation to exact specifications, far more accurately than manual methods", "Robotic Gripper and Cutter: A robotic system with specialized grippers and cutting tools that can handle various cable diameters and types, preparing them for tensile or electrical testing", "Automated Marking System: After preparation, the system can automatically label each sample with a unique QR code or text for perfect traceability."],
+                "skills": ["Robotics", "Mechanical Design (CAD)", "Lasers", "AI (Computer Vision)", "PLC Programming", "Material Science"],
+                "impact": 5, "metrics": ["Increase the consistency and repeatability of sample preparation by 99%", "Reduce sample prep time by 70%."]
+            },
+            {
+                "id": 56, "ministry": "Ministry of Consumer Affairs, Food & Public Distribution", "title": "To explore new/altermative assaying methods to the fire assay method for testing of gold jewellery and artefacts through non-destructive testing", "simplified": "Explore non-destructive alternative methods for testing gold purity.", "category": "Hardware", "domain": "Miscellaneous", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Electrical Impedance Tomography: Pass tiny currents through jewelry via micro-electrodes; an AI analyzes the 3D impedance map to detect impurities", "High-Frequency Eddy Current Testing: Use an electromagnetic probe to induce eddy currents in the metal. An AI analyzes the response to determine purity and detect plating, even on complex shapes", "X-ray Fluorescence (XRF) with AI Correction: Use a portable XRF scanner, but with an AI model that corrects for the geometric shape of the jewelry, providing more accurate results than standard flat-sample readings."],
+                "skills": ["Sensor Tech", "Physics (Electromagnetism)", "AI/ML", "Tomography", "XRF Spectroscopy", "Signal Processing", "Embedded Systems"],
+                "impact": 8, "metrics": ["Provide a gold purity assessment with 99.5% accuracy without any damage", "Reduce testing time from hours (fire assay) to under 2 minutes."]
+            },
+            {
+                "id": 57, "ministry": "Ministry of Consumer Affairs, Food & Public Distribution", "title": "Automated Compliance Checker for Legal Metrology Declarations on E-Commerce Platforms", "simplified": "Create an automated compliance checker for declarations on e-commerce platforms.", "category": "Hardware", "domain": "Miscellaneous", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["AI-Powered Web Scraper & OCR: A system that continuously scrapes e-commerce sites, uses OCR on product images, and NLP on descriptions to flag listings missing mandatory declarations", "'Report a Listing' Browser Extension: A browser plugin for consumers and regulators that allows them to click a button on a non-compliant product page, which automatically analyzes and flags the listing for review", "Generative AI for Compliance Reports: After scraping, a generative AI can write a human-readable report summarizing the types and prevalence of non-compliance found on a given platform."],
+                "skills": ["Web Scraping (Scrapy/BeautifulSoup)", "AI (OCR, NLP - BERT)", "Web Dev (Browser Extensions)", "Generative AI (GPT-3/4)", "Databases", "Cloud Infrastructure"],
+                "impact": 6, "metrics": ["Automatically scan 10,000+ listings per day for compliance", "Increase detection of non-compliant listings by 300%."]
+            },
+            {
+                "id": 58, "ministry": "Ministry of Consumer Affairs, Food & Public Distribution", "title": "Detection and Prevention of Tampering in Weighing and Measuring instruments", "simplified": "Detect and prevent tampering in weighing and measuring instruments.", "category": "Hardware", "domain": "Miscellaneous", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Self-Calibrating IoT Weighing Scale: A digital scale with an internal reference weight that performs periodic self-calibration checks and sends alerts if a discrepancy is found", "Anti-Tamper Digital Seal: The instrument's calibration settings are protected by a cryptographic hash. Any change to the settings breaks the seal, which is easily verifiable by an inspector's app", "Vibration and Tilt Sensor Log: The instrument logs any unusual physical shocks or tilting, which could indicate tampering, and flags it for the next inspection."],
+                "skills": ["IoT", "Sensors (Load Cells, Accelerometers)", "Cybersecurity (Cryptography)", "Embedded Systems (Secure Microcontrollers)", "Blockchain (for immutable logs)", "Mobile App Dev"],
+                "impact": 8, "metrics": ["Ensure 99.9% integrity of measurement readings", "Provide a verifiable, immutable audit trail for all calibration activities."]
+            },
+            {
+                "id": 59, "ministry": "Ministry of Social Justice & Empowerment (MoSJE)", "title": "Enhancing Student Awareness on difference between Aadhaar linked and Direct Beneficiary Transfer(DBT) enabled Aadhaar seeded bank account.", "simplified": "Enhance student awareness about different types of Aadhaar-linked bank accounts.", "category": "Software", "domain": "Miscellaneous", "difficulty": "Easy", "potential": "Low",
+                "ideas": ["Interactive Comic/Story App: A simple mobile app telling a story of two students, one with a correctly seeded account and one without, to explain the difference", "'Check Your Status' Wizard: A simple web tool that guides a student through a series of questions to help them understand their current account status and what steps to take if it's incorrect", "WhatsApp Information Bot: A chatbot that uses simple infographics and short videos to explain the concepts in multiple regional languages."],
+                "skills": ["Mobile App Dev", "FinTech", "Content Creation (Video/Graphics)", "UI/UX", "Web Dev", "Chatbot Frameworks"],
+                "impact": 4, "metrics": ["Reduce the number of scholarship payment failures due to incorrect account seeding by 50%", "Increase student awareness score by 70% in surveys."]
+            },
+            {
+                "id": 60, "ministry": "Ministry of Social Justice & Empowerment (MoSJE)", "title": "Real life solutions for Waste Management.", "simplified": "Provide real-life solutions for waste management.", "category": "Software", "domain": "Clean & Green Tech", "difficulty": "Medium", "potential": "High",
+                "ideas": ["'Uber for Waste': An app connecting households with segregated waste to independent collectors, creating a marketplace and ensuring fair pricing", "AI-Powered Compost Quality Monitor: An IoT device for community composting pits that uses sensors and an AI model to monitor temperature, moisture, and C/N ratio, providing guidance for optimal composting", "Corporate Recycling Exchange: A B2B platform where companies can sell their recyclable waste (e.g., cardboard, plastic) to certified recyclers, creating a circular economy."],
+                "skills": ["Mobile App Dev", "IoT", "GIS", "AI/ML", "Web Platform", "Payment Gateway Integration", "Sensor Technology"],
+                "impact": 8, "metrics": ["Divert 30% more recyclable waste from landfills", "Create new income opportunities for the informal waste collector sector."]
+            },
+            {
+                "id": 61, "ministry": "Government of Sikkim", "title": "Digitize and Showcase Monasteries of Sikkim for Tourism and Cultural Preservation", "simplified": "Digitize and showcase Sikkim's monasteries for tourism and cultural preservation.", "category": "Software", "domain": "Travel & Tourism", "difficulty": "Medium", "potential": "High",
+                "ideas": ["Interactive 3D 'Digital Twin': A photorealistic 3D model of a monastery where users can click on artifacts to bring up high-res photos and audio commentary from monks", "'Be a Monk for a Day' VR Experience: A VR simulation that guides users through the daily rituals and meditative practices of a monk within the monastery", "AR Manuscript Viewer: An AR app that allows users to view ancient, fragile manuscripts, overlaying translations and explanations without anyone touching the original."],
+                "skills": ["Web/App Dev", "3D Modeling (Photogrammetry, LiDAR)", "AR/VR (Unity/Unreal)", "High-Resolution Imaging", "Audio Production", "UI/UX"],
+                "impact": 7, "metrics": ["Digitally preserve 15 key monasteries within two years", "Increase online tourist engagement with Sikkim's culture by 100%."]
+            },
+            {
+                "id": 62, "ministry": "Government of Sikkim", "title": "Implementation of Smart Agriculture for Efficient Cultivation in Hilly Regions", "simplified": "Implement smart agriculture for efficient cultivation in hilly regions.", "category": "Hardware", "domain": "Agriculture & FoodTech", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Terrace Farming Drone: A specialized drone designed to navigate the contours of terrace farms for targeted seeding, spraying, and health monitoring", "Solar-Powered Drip Irrigation System: An automated drip irrigation system optimized for terraced farms, using IoT sensors to deliver water precisely where needed, powered entirely by solar", "Landslide Early Warning System: A network of soil moisture and movement sensors that can provide an early warning to farmers about potential landslides that could affect their terraces."],
+                "skills": ["IoT", "Drones", "AI/ML (for crop health analysis)", "Robotics", "Solar Power Systems", "Sensor Networks (Geotechnical)", "GIS"],
+                "impact": 9, "metrics": ["Increase crop yield on terrace farms by 25%", "Reduce water consumption for irrigation by 40%."]
+            },
+            {
+                "id": 63, "ministry": "Government of Kerala", "title": "Developing a cost effective solution for detecting the breakage of Low Voltage AC Distribution Over Head conductors", "simplified": "Develop a cost-effective solution to detect breakage of overhead power lines.", "category": "Hardware", "domain": "Disaster Management", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Power Line Harmonic Analysis: A device at the transformer that listens to the 'harmonic signature' of the power line; a break causes a unique change that trips the circuit", "End-of-Line Voltage Monitor: A low-cost IoT device installed at the end of a power line that sends a continuous 'heartbeat' signal. If the heartbeat stops, the line is presumed broken", "Standing Wave Reflectometry: A system that sends a low-energy pulse down the line and listens for reflections. A break creates a reflection that can be timed to pinpoint the location of the fault."],
+                "skills": ["IoT", "Sensors", "Electrical Engineering", "Signal Processing (FFT)", "Embedded Systems", "Wireless Communication (LoRa/NB-IoT)"],
+                "impact": 9, "metrics": ["Detect 99% of all line breaks within 1 second", "Reduce risk of electrocution from fallen lines significantly."]
+            },
+            {
+                "id": 64, "ministry": "Government of Kerala", "title": "Improving the Renewable Energy hosting capacity in Distribution Feeders improving the Power quality of Distribution network during high RE injection", "simplified": "Improve the power grid's capacity to handle renewable energy injection.", "category": "Hardware", "domain": "Renewable / Sustainable Energy", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Community-Scale Battery Storage with AI Controller: Deploy neighborhood batteries with an AI that predicts solar generation and demand, intelligently charging/discharging to stabilize the grid", "Dynamic Power Factor Correction: Smart devices installed at feeder points that actively adjust the power factor in real-time to counteract fluctuations from solar injection, improving grid efficiency", "AI-Powered Demand Response System: The system encourages large consumers (e.g., factories) to shift their energy usage based on real-time renewable energy availability, offering them financial incentives."],
+                "skills": ["Electrical Engineering (Power Systems)", "IoT", "AI/ML (Forecasting)", "Battery Management Systems (BMS)", "Power Electronics", "Smart Grid Tech"],
+                "impact": 8, "metrics": ["Increase the hosting capacity of renewable energy on existing feeders by 25%", "Reduce voltage fluctuation incidents by 50%."]
+            },
+            {
+                "id": 65, "ministry": "Ministry of Jal Shakti", "title": "Designing and development of an application for on spot assessment of Roof Top Rain water harvesting and artificial recharge potential and size of the RTRWH and AR.", "simplified": "Design an app for on-the-spot assessment of rainwater harvesting potential.", "category": "Software", "domain": "Smart Automation", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["AR-Based Roof Measurement: The app uses augmented reality to automatically measure a rooftop's dimensions just by pointing a phone camera at it", "AI-Powered Permeability Assessment: Users can take a photo of the ground, and a CV model estimates the soil type and permeability to suggest the best location for a recharge pit", "Gamified Water Saving Simulator: The app includes a simulator showing how much water a household could save and the financial benefits over time, encouraging adoption."],
+                "skills": ["Mobile App Dev", "GIS (for rainfall data)", "Hydrology", "AR (ARKit/ARCore)", "AI (Computer Vision)", "Gamification"],
+                "impact": 8, "metrics": ["Reduce the time for a rainwater harvesting assessment from half a day to 5 minutes", "Increase the adoption rate of rainwater harvesting systems by 20%."]
+            },
+            {
+                "id": 66, "ministry": "Ministry of Jal Shakti", "title": "Development of an Al-driven ChatBOT for INGRES as a virtuall assistant", "simplified": "Develop an AI chatbot as a virtual assistant for the INGRES system.", "category": "Software", "domain": "Smart Automation", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["Proactive Task Assistant: The chatbot proactively monitors the INGRES system and sends suggestions, such as, 'A new grievance has been pending for 48 hours. Escalate?'", "Natural Language Reporting: A manager can ask the chatbot, 'Show me the top 5 types of grievances in the northern region last month,' and the bot will generate and display the report", "Voice-Enabled Data Entry: Field officers can use their voice to report updates and close grievances through the chatbot, improving efficiency."],
+                "skills": ["AI (NLP, Chatbots - Rasa/Dialogflow)", "API Integration", "Business Process Automation", "Natural Language Generation (NLG)", "Voice-to-Text"],
+                "impact": 6, "metrics": ["Automate 50% of routine queries handled by the support team", "Reduce the time to generate standard reports by 80%."]
+            },
+            {
+                "id": 67, "ministry": "Ministry of Jal Shakti", "title": "Proposal for Design and development of application or Heavy Metal Pollution indices", "simplified": "Design an application for calculating Heavy Metal Pollution indices.", "category": "Software", "domain": "Miscellaneous", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["Visual Pollution Index Map: The app takes raw data and translates it into a simple, color-coded heat map, allowing policymakers to easily understand pollution hotspots", "'What-If' Scenario Planner: The tool allows users to simulate the impact of potential interventions (e.g., 'What if we reduce industrial discharge by 30%?') on the pollution index", "Citizen Science Reporting Module: An integrated feature where trained citizens can use certified test kits and upload results to the platform, enriching the official data."],
+                "skills": ["Web/App Dev", "Chemistry", "Data Visualization (D3.js, Mapbox)", "GIS", "Data Science", "Environmental Science Modeling"],
+                "impact": 7, "metrics": ["Make complex pollution data understandable to non-expert policymakers", "Increase public access and engagement with environmental data."]
+            },
+            {
+                "id": 68, "ministry": "Ministry of Jal Shakti", "title": "Real time Groundwater resource evaluation using DWLR data", "simplified": "Develop a system for real-time groundwater resource evaluation using sensor data.", "category": "Software", "domain": "Miscellaneous", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Aquifer Depletion Forecasting: An AI model uses historical and real-time sensor data to forecast groundwater levels for the next 3-6 months under different rainfall scenarios", "Automated Water Budgeting: The system creates a real-time water budget for an aquifer, balancing recharge and extraction data to recommend sustainable pumping limits", "Salinity Intrusion Alert System: In coastal areas, the system can predict and issue alerts if over-extraction is likely to cause saltwater to intrude into the freshwater aquifer."],
+                "skills": ["Data Science", "AI/ML (Time-Series Forecasting - LSTM)", "IoT", "GIS", "Hydrology", "Big Data Processing", "Cloud Analytics"],
+                "impact": 9, "metrics": ["Provide groundwater depletion forecasts with 90% accuracy for a 3-month window", "Reduce unsustainable water extraction by 20%."]
+            },
+            {
+                "id": 69, "ministry": "Ministry of Mines", "title": "Al-Driven Life Cycle Assessment (LCA) Tool for Advancing Circulanty and Sustainability in Metallurgy and Mining", "simplified": "Create an AI-driven tool for Life Cycle Assessment (LCA) in mining and metallurgy.", "category": "Software", "domain": "Miscellaneous", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Supply Chain 'What-If' Engine: A tool allowing companies to simulate the carbon footprint impact of supply chain changes, like switching to electric trucks", "'Circular Economy' Opportunity Finder: The AI analyzes a mine's waste products and by-products to suggest potential uses in other industries, creating new revenue streams", "Real-Time Sustainability Dashboard: The tool integrates with live operational data to provide a real-time dashboard of the mine's environmental footprint against its sustainability goals."],
+                "skills": ["AI/ML", "Data Science", "Web Dev", "Simulation", "Life Cycle Assessment (LCA) Databases", "API Integration", "Environmental Science"],
+                "impact": 7, "metrics": ["Reduce the time to conduct an LCA from months to days", "Identify new circular economy opportunities that can generate 5% additional revenue."]
+            },
+            {
+                "id": 70, "ministry": "Ministry of Mines", "title": "Secure Data Wiping for Trustworthy IT Asset Recycling", "simplified": "Develop secure data wiping software for trustworthy IT asset recycling.", "category": "Software", "domain": "Miscellaneous", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["Blockchain-Verified Erasure Certificate: The software performs a DoD-level wipe and stores a cryptographic hash of the process log on a blockchain, creating an immutable certificate of destruction", "Remote 'Kill Switch' for Retired Assets: A feature that allows an administrator to remotely trigger a secure wipe on a lost or stolen asset that is scheduled for recycling", "AI-Powered Component Identification: The software can identify the specific type of hard drive or storage media and automatically select the most effective and efficient wiping algorithm."],
+                "skills": ["Cybersecurity", "Low-level Programming (C/C++)", "Blockchain", "Cryptography", "API Dev", "Hardware Drivers"],
+                "impact": 6, "metrics": ["Provide a 100% tamper-proof and verifiable certificate of data destruction", "Ensure compliance with international data privacy standards like GDPR."]
+            },
+            {
+                "id": 71, "ministry": "Ministry of Mines", "title": "Al-Based Rockfall Prediction and Alert System for Open-Pit Mines", "simplified": "Build an AI-based system to predict and provide alerts for rockfalls in open-pit mines.", "category": "Software", "domain": "Disaster Management", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Micro-Seismic Triangulation: A network of sensitive ground sensors listens for tiny seismic signals that precede a rockfall; an AI triangulates the source to predict the collapse location", "3D Slope Deformation Monitoring: The system uses LiDAR or radar data to create a 3D model of the mine walls, using AI to detect millimeter-scale movements that indicate instability", "Drone-Based Visual Inspection: Drones perform automated visual inspections of high walls, with an AI analyzing the footage to identify new cracks or geological weaknesses."],
+                "skills": ["AI/ML (Pattern Recognition, Predictive Models)", "IoT", "GIS", "Signal Processing", "Geotechnical Engineering", "LiDAR/Radar processing", "Drone Automation"],
+                "impact": 9, "metrics": ["Provide rockfall warnings with at least 1-hour lead time and 80% accuracy", "Reduce worker fatalities and equipment damage due to rockfalls."]
+            },
+            {
+                "id": 72, "ministry": "Ministry of Mines", "title": "Design and Implementation of Solar-Powered Dewatering in Mining Operations.", "simplified": "Design and implement solar-powered dewatering systems in mining operations.", "category": "Hardware", "domain": "Renewable / Sustainable Energy", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Smart 'Pump-on-Demand' System: The system uses IoT sensors to monitor water levels and only activates solar-powered pumps when needed, prioritizing times of peak solar generation", "Hybrid Solar-Grid System with AI: An AI controller decides when to use solar power, battery storage, or the grid for pumping, optimizing for the lowest cost and carbon footprint", "Mobile Solar Pumping Skids: Self-contained, trailer-mounted solar panel and pump systems that can be easily moved to different parts of the mine as dewatering needs change."],
+                "skills": ["Solar Power Design", "Mechanical Engineering", "IoT", "Fluid Dynamics", "Battery Storage Systems", "AI (Optimization)", "PLC Programming"],
+                "impact": 8, "metrics": ["Reduce the energy cost of dewatering operations by 40%", "Decrease the carbon footprint of the mine's operations."]
+            },
+            {
+                "id": 73, "ministry": "Ministry of Youth Affairs and Sports", "title": "Al-Powered Mobile Platform for Democratizing Sports Talent Assessment", "simplified": "Create an AI-powered mobile platform for assessing sports talent.", "category": "Software", "domain": "Fitness & Sports", "difficulty": "Medium", "potential": "High",
+                "ideas": ["Biomechanics Analysis from Phone Video: A cricketer can upload a video of them bowling, and AI uses pose estimation to analyze their biomechanics and give feedback", "'Player vs. Pro' Comparison: The platform can overlay a young athlete's movements with that of a professional player, highlighting key differences in technique", "Gamified Drills and Leaderboard: The app provides AI-guided drills and scores the athlete's performance, placing them on a national leaderboard to foster competition and discovery."],
+                "skills": ["AI (Computer Vision, Pose Estimation)", "Mobile App Dev", "Data Science", "Physics Engines (for trajectory analysis)", "Video Processing (FFmpeg)", "Cloud"],
+                "impact": 7, "metrics": ["Make professional-level biomechanical analysis accessible to any athlete with a smartphone", "Increase the pool of identified talent by 10x."]
+            },
+            {
+                "id": 74, "ministry": "Government of Kerala", "title": "AI-Powered Personal Farming Assistant for Kerala Farmers", "simplified": "Build an AI-powered personal farming assistant for farmers in Kerala.", "category": "Software", "domain": "Agriculture & FoodTech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Pest & Disease Diagnosis via WhatsApp: A farmer sends a photo of an infected plant to a WhatsApp number, and an AI replies with the diagnosis and treatment in Malayalam", "Voice-Based Mandi Price Checker: Farmers can ask 'What is the price of coconuts in the Kochi market?' in Malayalam and get a real-time voice response", "AI-Powered Nutrient Deficiency Identifier: The app analyzes photos of plant leaves to identify specific nutrient deficiencies (e.g., yellowing for nitrogen) and recommends the right fertilizer."],
+                "skills": ["AI/ML (Computer Vision, NLP)", "WhatsApp Business API", "Voice Tech (TTS/STT)", "Mobile App Dev", "API Integration (for market prices)"],
+                "impact": 9, "metrics": ["Provide a diagnosis for common crop diseases with 95% accuracy within seconds", "Increase farmer profits by 10% through better market timing."]
+            },
+            {
+                "id": 75, "ministry": "Government of Kerala", "title": "Gamified Platform to Promote Sustainable Farming Practices", "simplified": "Create a gamified platform to promote sustainable farming practices.", "category": "Software", "domain": "Agriculture & FoodTech", "difficulty": "Medium", "potential": "High",
+                "ideas": ["'Farmer League': A fantasy league-style platform where farmers form local teams and earn points by logging sustainable actions (e.g., using bio-pesticides)", "Digital Marketplace for Organic Produce: Farmers who achieve a high 'sustainability score' on the platform get premium placement on an integrated marketplace to sell their produce", "'Seed Savers' Network: A feature that gamifies the process of saving and exchanging indigenous seeds, creating a community-driven seed bank and promoting biodiversity."],
+                "skills": ["Mobile App Dev", "Gamification", "Behavioral Science", "Blockchain (for certifying organic status)", "E-commerce Platform", "Community Features"],
+                "impact": 7, "metrics": ["Increase adoption of sustainable farming practices by 30%", "Create a direct market linkage for 1,000+ organic farmers."]
+            },
+            {
+                "id": 76, "ministry": "Government of Kerala", "title": "AI-Based Farmer Query Support and Advisory System", "simplified": "Develop an AI-based system to answer farmer queries and provide advice.", "category": "Software", "domain": "Agriculture & FoodTech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Voice-Based Community Forum: A farmer asks a question in Malayalam; the AI provides a standard answer and also searches a database to play back advice from other local farmers", "AI-Powered 'What's Wrong with My Crop?' Wizard: A guided diagnostic tool where the chatbot asks a series of simple questions to narrow down a crop issue, instead of relying on just one photo", "Automated Subsidy Information Service: The chatbot is kept up-to-date on all government subsidies and can guide a farmer through the eligibility and application process."],
+                "skills": ["AI (NLP, Chatbots)", "Voice Tech (TTS/STT)", "Database Management", "Search Algorithms", "Community Forum Software", "Web Scraping (for subsidy info)"],
+                "impact": 8, "metrics": ["Provide automated, accurate answers to 70% of farmer queries", "Reduce the reliance on call centers and extension officers for basic information."]
+            },
+            {
+                "id": 77, "ministry": "Government of Kerala", "title": "A hardware that can detect and prevent unauthorized use of electric fences", "simplified": "Design hardware to detect and prevent unauthorized use of electric fences.", "category": "Hardware", "domain": "Smart Automation", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Smart Fence Energizer with Signature Analysis: The energizer learns the unique electrical 'signature' of its fence line. Tampering creates a detectable anomaly, triggering an alarm", "Distributed Fault Detection: Small, low-cost sensor nodes are placed along the fence. They monitor voltage and can triangulate the exact location of a fault or illegal tap", "Biometric Authentication: The energizer can only be turned off or adjusted by an authorized user via a fingerprint scanner or a secure mobile app, preventing unauthorized deactivation."],
+                "skills": ["IoT", "Sensors (Voltage, Current)", "Embedded Systems", "Signal Processing", "Machine Learning (Anomaly Detection)", "Biometrics", "Mobile App Dev"],
+                "impact": 7, "metrics": ["Detect and locate fence tampering or faults with meter-level accuracy", "Reduce electricity theft from fences by 95%."]
+            },
+            {
+                "id": 78, "ministry": "Government of Kerala", "title": "Software other than a circuit breaker that can be used to detect and turn off LT lines when the line breaks", "simplified": "Develop software (not a circuit breaker) to detect and turn off broken low-tension lines.", "category": "Software", "domain": "Disaster Management", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Distributed Line Break Detection via Mesh Network: Small IoT sensor nodes on power poles form a mesh network. If a node loses communication with its neighbor, the system deduces a line break and signals the substation to de-energize that segment", "Phasor Measurement Unit (PMU) Analysis: AI analyzes high-resolution data from micro-PMUs to detect the unique electrical signature of a snapping conductor, allowing for a sub-second shutdown command", "AI-based Feeder Automation System: Central software that continuously monitors load patterns. A sudden, specific type of load drop is identified by an AI as a line break, triggering the shutdown."],
+                "skills": ["IoT", "Mesh Networking", "Signal Processing", "AI/ML", "SCADA Systems", "Power Systems Engineering", "Phasor Measurement Units (PMUs)"],
+                "impact": 9, "metrics": ["De-energize a broken LT line in under 2 seconds to prevent electrocution", "Pinpoint the location of the break to within one or two pole spans."]
+            },
+            {
+                "id": 79, "ministry": "Government of Kerala", "title": "Document Overload at Kochi Metro Rail Limited (KMRL)-An automated solution", "simplified": "Create an automated solution to handle document overload at Kochi Metro.", "category": "Software", "domain": "Smart Automation", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["AI-Powered 'Intelligent Search': A system that ingests scanned documents and uses AI to understand content, allowing employees to search for concepts, not just keywords", "Automated Document Classifier and Router: An AI model that reads a new document, automatically classifies it (e.g., 'Safety Audit', 'Tender'), and routes it to the correct department's workflow", "Contract Compliance Checker: An AI tool that analyzes vendor contracts and automatically flags clauses that deviate from KMRL's standard terms and conditions."],
+                "skills": ["AI (OCR, NLP, Document Understanding)", "Robotic Process Automation (RPA)", "Enterprise Search Technology (Elasticsearch)", "Workflow Automation", "Machine Learning"],
+                "impact": 6, "metrics": ["Reduce time spent searching for documents by 80%", "Automatically classify 95% of incoming documents correctly."]
+            },
+            {
+                "id": 80, "ministry": "Government of Kerala", "title": "AI-Driven Train Induction Planning & Scheduling for Kochi Metro Rail Limited (KMRL)", "simplified": "Use AI for train induction planning and scheduling for Kochi Metro.", "category": "Software", "domain": "Smart Automation", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Predictive Maintenance Scheduling: The AI system integrates with train sensor data to schedule maintenance based on predicted component wear and tear, not just fixed intervals", "Demand-Responsive Timetabling: The AI analyzes real-time passenger flow data from stations to dynamically adjust train frequency and schedules to match demand, especially during events or disruptions", "Crew Roster Optimization: An optimization engine that creates the most efficient and fair crew rosters, taking into account labor regulations, route knowledge, and individual preferences."],
+                "skills": ["AI (Optimization, Predictive Analytics, Reinforcement Learning)", "Simulation", "Operations Research", "Big Data Analytics", "IoT (for train sensor data)"],
+                "impact": 8, "metrics": ["Improve on-time performance by 10%", "Increase fleet availability by 5% through optimized maintenance."]
+            },
+            {
+                "id": 81, "ministry": "Government of Kerala", "title": "Development of a travel related software app that can be installed on mobile phones that could capture trip related information", "simplified": "Develop a mobile app to automatically capture trip-related travel information.", "category": "Software", "domain": "Travel & Tourism", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Automatic 'Travel Diary' Generator: The app runs in the background using phone sensors to automatically detect modes of transport (walk, bus, car, metro) and constructs a daily travel diary for urban planning surveys", "Carbon Footprint Calculator: Based on the detected travel modes, the app automatically calculates the user's daily travel carbon footprint and suggests greener alternatives", "'Points of Interest' Dwell Time Analysis: The app can anonymously detect when a user spends significant time at a tourist spot, providing valuable data to tourism departments on which attractions are most popular."],
+                "skills": ["Mobile App Dev", "GPS", "Sensor Fusion (Accelerometer, Gyroscope)", "AI/ML (Activity Recognition)", "Data Analytics", "Battery Optimization"],
+                "impact": 7, "metrics": ["Automatically capture 90% of a user's trips with correct mode detection", "Provide urban planners with rich, anonymized origin-destination data."]
+            },
+            {
+                "id": 82, "ministry": "Government of Kerala", "title": "Digital Health Record Management System for migrant workers in Kerala aligned with sustainable development goals.", "simplified": "Create a digital health record management system for migrant workers in Kerala.", "category": "Software", "domain": "MedTech / HealthTech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Multi-Language, Image-Based Health Card: A QR-code based health card that, when scanned, displays health records in an interface that can be switched between languages and uses universal icons", "Blockchain for Data Portability: Health records are stored on a secure blockchain, allowing a worker to grant temporary access to any doctor, anywhere, ensuring their data is portable and owned by them", "AI-Powered Health Trend Analysis: The system can analyze anonymized data to identify common health issues among the migrant worker population, helping to plan targeted public health interventions."],
+                "skills": ["Web/App Dev", "Data Security (Encryption)", "UI/UX", "Health IT (HL7/FHIR)", "Blockchain", "Multilingual Support", "Data Analytics"],
+                "impact": 8, "metrics": ["Ensure every migrant worker has a portable, secure health record", "Reduce language barrier issues in healthcare consultations by 80%."]
+            },
+            {
+                "id": 83, "ministry": "Government of Kerala", "title": "Earthquake stabilised dialysis system for patient safety during seismic events.", "simplified": "Design an earthquake-stabilized dialysis system for patient safety.", "category": "Hardware", "domain": "Disaster Management", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Gyroscopically Stabilized Patient Platform: Instead of stabilizing the heavy machine, design a lighter, gyroscopically stabilized platform for the patient's chair that counteracts seismic tremors", "'Breakaway' Safety Connectors: Design medical tubing connectors with a controlled breakaway point that, upon sensing high tension, safely disconnects and seals both ends to prevent blood loss", "Active Vibration Cancelling Bed: A patient bed with an active suspension system that uses accelerometers and actuators to cancel out ground vibrations in real-time."],
+                "skills": ["Mechanical Engineering", "Robotics", "Sensors (Accelerometers, Gyros)", "Control Systems", "Medical Device Design (ISO 13485)", "Material Science"],
+                "impact": 10, "metrics": ["Maintain needle stability during a simulated earthquake", "Prevent catastrophic failure of the dialysis circuit during seismic events."]
+            },
+            {
+                "id": 84, "ministry": "Government of Kerala", "title": "Solution for NON-REVENUE LOSS IN WATER SUPPLY Solution to improve AWARENESS IN WATER CONSERVATION TREATMENT OF WASTE WATER AND REUSE FOR DOMESTIC PURPOSES", "simplified": "Find a solution for non-revenue water loss and promote water conservation.", "category": "Hardware", "domain": "Miscellaneous", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Acoustic Leak Detection Network: A network of acoustic sensors along water pipes that 'listen' for the unique sound of a leak, with an AI that triangulates the precise location", "Smart Water Meters with AI: Smart meters that learn a household's typical water usage pattern and can send an alert for unusual consumption, which could indicate a leak or wastage", "Gamified Conservation App: A mobile app that shows households their consumption compared to their neighbors, with leaderboards and rewards for water saving."],
+                "skills": ["IoT", "Sensors (Acoustic, Flow)", "Fluid Dynamics", "AI/ML (Anomaly Detection)", "Signal Processing", "Mobile App Dev", "Gamification"],
+                "impact": 9, "metrics": ["Reduce non-revenue water (NRW) loss by 25%", "Decrease average household water consumption by 15%."]
+            },
+            {
+                "id": 85, "ministry": "Government of Kerala", "title": "GREY WATER MANAGEMENT AND REUSE WET LAND MANAGEMENT WATER CONSERVATION", "simplified": "Develop systems for grey water management, reuse, and wetland management.", "category": "Hardware", "domain": "Clean & Green Tech", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Modular 'Living Wall' Greywater Filter: A compact, modular vertical garden for households that naturally filters greywater from sinks and showers for reuse in flushing or gardening", "IoT-Monitored Constructed Wetland: A system for community-level wastewater treatment using constructed wetlands, with IoT sensors monitoring water quality and flow to ensure optimal performance", "Smart Rainwater/Greywater Diverter: An automated valve system that prioritizes using rainwater for non-potable uses, and only supplements with filtered greywater when the rainwater tank is empty."],
+                "skills": ["Civil Engineering", "IoT", "Chemistry", "Environmental Science", "Botany", "Fluid Dynamics", "Sensor Technology"],
+                "impact": 9, "metrics": ["Enable households to recycle 70% of their greywater", "Improve the water quality of treated wastewater to meet standards for agricultural reuse."]
+            },
+            {
+                "id": 86, "ministry": "Government of Jammu and Kashmir", "title": "AI-Based Timetable Generation System aligned with NEP 2020 for Multidisciplinary Education Structures", "simplified": "Build an AI-based system to generate timetables aligned with NEP 2020.", "category": "Software", "domain": "Smart Automation", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["Student Choice Optimization: The AI allows students to input elective preferences and generates a timetable that maximizes the number of students getting their top-choice multidisciplinary subjects", "'Credit Balancing' Feature: The system ensures that the generated timetables for students are balanced in terms of academic load and credit hours per semester, as per NEP guidelines", "Faculty Skill Matching: The AI can also assign faculty to courses based not just on availability, but also on their specific research interests and student feedback scores, improving teaching quality."],
+                "skills": ["AI (Optimization, Constraint Satisfaction)", "Algorithm Design", "Web Dev", "Database Management", "UI/UX", "Education Policy understanding"],
+                "impact": 7, "metrics": ["Increase the fulfillment of students' first-choice electives by 40%", "Reduce timetable creation time from weeks to hours."]
+            },
+            {
+                "id": 87, "ministry": "Government of Jammu and Kashmir", "title": "Development of a Digital Mental Health and Psychological Support System for Students in Higher Education", "simplified": "Develop a digital mental health and psychological support system for students.", "category": "Software", "domain": "MedTech / HealthTech", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Anonymous AI-Moderated Peer Support Groups: A platform for anonymous student chat groups, where an AI monitors chats for negative sentiment and can alert a human professional if intervention is needed", "AI-Powered 'Wellness Buddy' Chatbot: A chatbot that provides evidence-based psychological exercises (like CBT), mood tracking, and can connect students to professional help if needed", "Personalized Content Feed: The app provides a feed of articles, videos, and workshops on mental wellness, personalized based on the student's self-reported stress factors."],
+                "skills": ["Mobile App Dev", "AI (NLP, Sentiment Analysis)", "Cloud", "Data Security (Anonymization)", "Chatbot Frameworks", "Psychology (CBT/Mindfulness)"],
+                "impact": 8, "metrics": ["Increase student access to mental health resources by 300%", "Provide early intervention for 70% of students identified as high-risk by the AI."]
+            },
+            {
+                "id": 88, "ministry": "Government of Jammu and Kashmir", "title": "Centralised Digital Platform for Comprehensive student activity record in HEIs", "simplified": "Create a centralized digital platform to record all student activities in higher education.", "category": "Software", "domain": "Smart Education", "difficulty": "Easy", "potential": "Low",
+                "ideas": ["'Skill Portfolio' Generator: As students log activities, they tag the skills used (e.g., 'leadership'); the platform then auto-generates a 'Skill Portfolio' to share with employers", "Verifiable Digital Badges: Upon completion of a certified activity or workshop, the platform issues a verifiable digital badge that can be added to a student's LinkedIn profile", "Co-curricular Transcript: The system can generate an official 'co-curricular transcript' that formally documents a student's activities and achievements outside of academics."],
+                "skills": ["Web Dev", "Databases", "Cloud", "UI/UX", "API for integrations (e.g., LinkedIn)", "Digital Badge standards (Open Badges)"],
+                "impact": 6, "metrics": ["Achieve 90% student adoption for logging activities", "50% of graduating students share their Skill Portfolio with employers."]
+            },
+            {
+                "id": 89, "ministry": "Government of Jammu and Kashmir", "title": "One-Stop Personalized Career & Education Advisor", "simplified": "Build a one-stop personalized career and education advisor platform.", "category": "Software", "domain": "Smart Education", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Alumni Career Path Visualization: The platform analyzes alumni career paths and shows a current student a visual 'road map,' e.g., 'To become a Data Scientist, 60% of alumni took these courses'", "AI-Powered Resume Builder: The tool suggests skills and keywords to add to a student's resume based on the job description of their target career", "'Future Skills' Forecaster: The platform analyzes industry trends and job market data to recommend courses and skills that will be in high demand in the future."],
+                "skills": ["AI/ML (Recommender Systems)", "Data Visualization (D3.js)", "Web Dev", "NLP (for resume analysis)", "Web Scraping (for job market data)", "Data Analytics"],
+                "impact": 7, "metrics": ["Improve student career path clarity, measured by a 30% increase in students declaring a major earlier", "Increase internship placement rate by 20%."]
+            },
+            {
+                "id": 90, "ministry": "Autodesk", "title": "Research and redesign a sport equipment commonly found in sport industry and utilize Fusion software to reimagine its design...", "simplified": "Use Fusion software's generative design to redesign a piece of sports equipment for 3D printing.", "category": "Hardware", "domain": "Smart Education", "difficulty": "Medium", "potential": "High",
+                "ideas": ["Generatively Designed Archery Riser: Use Fusion's generative design to create an archery riser (handle) optimized for minimal weight and maximum stiffness, molded to the archer's hand", "Lightweight Prosthetic Running Blade: Redesign a prosthetic running blade for para-athletes, using generative design to create a form that is both incredibly light and has the optimal spring characteristics", "Customizable Bike Frame: Design a bike frame where the core geometry is fixed, but generative design is used to create a unique, lightweight lattice structure for each rider based on their weight and riding style."],
+                "skills": ["CAD (Autodesk Fusion 360)", "Generative Design", "3D Printing (Metal/Carbon Fiber)", "Finite Element Analysis (FEA)", "Material Science", "Biomechanics"],
+                "impact": 7, "metrics": ["Create a redesigned archery riser that is 20% lighter while being 15% stiffer", "Design a prosthetic blade that improves energy return by 10%."]
+            },
+            {
+                "id": 91, "ministry": "Autodesk", "title": "• Students are supposed to use Fusion software to generate NC code with machine details & tool library for any industrial component...", "simplified": "Use Fusion software to generate NC code for machining an industrial component.", "category": "Hardware", "domain": "Smart Education", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["5-Axis Machining of a Turbine Blade: Use Fusion 360's advanced CAM features to generate the optimal 5-axis toolpaths to machine a complex turbine blade from a solid block", "Adaptive Clearing for Molds: Program the toolpaths for a complex injection mold, using Fusion's adaptive clearing strategy to maximize material removal rate while minimizing tool wear", "Mill-Turn Machining of a Crankshaft: Generate the complete NC code for a complex automotive crankshaft on a mill-turn machine, combining both lathe and milling operations in a single setup."],
+                "skills": ["CAD/CAM (Autodesk Fusion 360)", "Manufacturing", "CNC Programming (G-code)", "Machining", "Material Science", "Tooling Libraries"],
+                "impact": 6, "metrics": ["Reduce machining time for a complex component by 25% compared to standard toolpaths", "Achieve a specified surface finish (e.g., Ra 0.8) on all critical surfaces."]
+            },
+            {
+                "id": 92, "ministry": "Autodesk", "title": "Research and develop a design on autonomous small precision focused machine for planting crops or weeding.", "simplified": "Design an autonomous machine for precision planting or weeding.", "category": "Software", "domain": "Smart Education", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Micro-Dosing Weeder Robot: A small, solar-powered robot uses computer vision to distinguish crops from weeds and applies a single drop of herbicide directly onto the weed", "Autonomous Seeding Rover: A robot that uses GPS and computer vision to plant seeds at the optimal depth and spacing for a specific crop, logging the exact coordinates of each seed", "Companion Planting Robot: A more advanced robot that can identify different types of seedlings and implement a companion planting strategy, placing beneficial plants next to primary crops."],
+                "skills": ["Robotics (ROS)", "AI (Computer Vision)", "Embedded Systems", "CAD (Autodesk Fusion 360 for design)", "GPS (RTK for precision)", "Mechatronics", "Solar Power"],
+                "impact": 9, "metrics": ["Reduce herbicide usage by over 95%", "Improve crop germination rates by 10% through precision planting."]
+            },
+            {
+                "id": 93, "ministry": "Autodesk", "title": "Students are tasked with designing a 4-story commercial office building using Revit Architecture and Revit Structure...", "simplified": "Design a 4-story commercial office building in Revit, integrating architecture and structure.", "category": "Software", "domain": "Smart Education", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["Parametric 'Living Facade': Design the building with a parametric facade in Revit where window shades automatically adjust based on the sun's position, integrating architectural design and energy analysis", "Integrated Structural and MEP Model: Create a fully detailed model where the structural, mechanical, electrical, and plumbing (MEP) systems are designed to be clash-free from the outset", "'Digital Twin' for Facility Management: Develop the Revit model to a level of detail that it can be used as a 'digital twin' for the building's entire lifecycle, including facility management and maintenance scheduling."],
+                "skills": ["BIM (Autodesk Revit)", "Architecture", "Structural Engineering", "MEP Engineering", "Parametric Design (Dynamo)", "Energy Analysis (Insight)", "Digital Twin Concepts"],
+                "impact": 6, "metrics": ["Achieve a 'zero-clash' model between structural and MEP systems", "Design a facade that reduces the building's cooling load by 15%."]
+            },
+            {
+                "id": 94, "ministry": "MathWorks India Pvt. Ltd.", "title": "AI-powered monitoring of crop health, soil condition, and pest risks using multispectral/hyperspectral imaging and sensor data.", "simplified": "Use AI and multispectral imaging to monitor crop health, soil, and pests.", "category": "Software", "domain": "Smart Education", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Hyperspectral Nutrient Mapping: Use drone-mounted hyperspectral cameras and an AI to create a detailed map of specific nutrient deficiencies (nitrogen, potassium) before they are visible", "Early-Stage Disease Detection: Train a model on subtle spectral signature changes that occur in plants during the incubation period of a disease, allowing for treatment before symptoms appear", "Soil Organic Carbon (SOC) Estimation: An AI model that uses hyperspectral data to estimate the amount of organic carbon in the soil, crucial for assessing soil health and for carbon farming initiatives."],
+                "skills": ["AI (Computer Vision, Deep Learning)", "Data Science (MATLAB)", "Drones", "IoT", "Multispectral/Hyperspectral Imaging", "Remote Sensing", "GIS"],
+                "impact": 9, "metrics": ["Detect key nutrient deficiencies 7-10 days before visible symptoms appear", "Estimate Soil Organic Carbon with 90% accuracy."]
+            },
+            {
+                "id": 95, "ministry": "MathWorks India Pvt. Ltd.", "title": "Accelerating High-Fidelity Road Network Modeling for Indian Traffic Simulations.", "simplified": "Accelerate high-fidelity road network modeling for Indian traffic simulations.", "category": "Software", "domain": "Smart Education", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["AI-Generated Road Networks from Satellite Images: A deep learning model that automatically traces roads, identifies intersections, and estimates lane counts from satellite imagery for rapid simulation model creation", "'Traffic Sign and Signal' Recognition: An AI model that processes street-level imagery (like Mapillary) to automatically populate the simulation with traffic signs and signal locations and timings", "Dynamic Road Surface Modeling: A system that uses sensor data from vehicles to model road quality (e.g., potholes) within the simulation, affecting vehicle speed and behavior."],
+                "skills": ["Simulation (MATLAB/Simulink)", "AI/ML (Computer Vision, Semantic Segmentation)", "Data Science", "GIS", "Remote Sensing", "Digital Signal Processing"],
+                "impact": 8, "metrics": ["Reduce the time to create a city-scale traffic simulation model from months to a week", "Improve simulation accuracy by incorporating real-world road conditions."]
+            },
+            {
+                "id": 96, "ministry": "Government of Rajasthan", "title": "Remote classroom for rural colleges", "simplified": "Create a remote classroom solution for rural colleges.", "category": "Software", "domain": "Smart Education", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["AI-Powered 'Bandwidth Saver' Mode: During a live class, an AI monitors the stream and automatically switches low-bandwidth students from full-motion video to high-res still images with synced audio", "'Doubt Catcher' AI: An NLP tool that analyzes the class chat in real-time to identify and cluster common questions, allowing the teacher to address them efficiently", "Offline-First Content Sync: The platform's app automatically downloads all the week's materials when the student has good connectivity (e.g., in a town), so they can access it fully offline in their village."],
+                "skills": ["WebRTC", "Mobile App Dev", "Cloud", "AI/ML (NLP, Bandwidth Estimation)", "Offline-First Architecture", "Video Streaming Protocols"],
+                "impact": 8, "metrics": ["Reduce data consumption for students by up to 70% in 'Bandwidth Saver' mode", "Ensure 99% uptime and accessibility of learning materials, even in offline mode."]
+            },
+            {
+                "id": 97, "ministry": "Government of Rajasthan", "title": "AI-based drop-out prediction and counseling system", "simplified": "Build an AI-based system to predict student drop-outs and provide counseling.", "category": "Software", "domain": "Smart Automation", "difficulty": "Medium", "potential": "Medium",
+                "ideas": ["Personalized Intervention Playbook: When the AI flags a high-risk student, it generates a 'counseling playbook' with specific, data-driven talking points for the counselor", "'Positive Nudge' System: The system can send automated, personalized encouraging messages or resource links to students who are showing early signs of disengagement", "Social Network Analysis: The AI can analyze anonymized student interaction data to identify socially isolated students, who are often at a higher risk of dropping out."],
+                "skills": ["AI/ML (Predictive Analytics, Classification)", "Data Science", "Web Dev", "NLP (for generating talking points)", "Student Information System (SIS) integration"],
+                "impact": 8, "metrics": ["Predict potential dropouts with 85% accuracy one semester in advance", "Reduce the overall student dropout rate by 15%."]
+            },
+            {
+                "id": 98, "ministry": "Government of Rajasthan", "title": "ERP-based Integrated Student Management system", "simplified": "Develop an ERP-based integrated student management system.", "category": "Software", "domain": "Smart Automation", "difficulty": "Medium", "potential": "Low",
+                "ideas": ["Blockchain-Based Transcript Module: Integrate a module into the ERP that issues academic transcripts as a secure, verifiable credential on a blockchain, preventing forgery", "AI-Powered Fee Defaulter Prediction: The system analyzes past payment patterns and student demographics to predict which students are likely to default on their fees, allowing for early, gentle reminders", "Automated Hostel and Mess Management: A module that integrates hostel room allocation, mess bill calculation, and leave management directly within the main student ERP."],
+                "skills": ["Web Dev", "Databases", "Cloud", "Blockchain", "ERP Architecture", "AI/ML (Predictive modeling)", "System Integration"],
+                "impact": 6, "metrics": ["Create a unified system that integrates academic, financial, and administrative modules", "Make student transcripts 100% secure and instantly verifiable."]
+            },
+            {
+                "id": 99, "ministry": "Government of Rajasthan", "title": "Language Agnostic Chatbot", "simplified": "Create a language-agnostic chatbot.", "category": "Software", "domain": "Smart Education", "difficulty": "Hard", "potential": "Medium",
+                "ideas": ["Real-Time Multilingual Translation Core: Build the chatbot's core logic in one language, but use advanced real-time translation APIs to seamlessly convert user input and the bot's replies", "Dialect and Slang Detection: An NLU model that is specifically trained to understand and respond appropriately to regional dialects and colloquialisms, not just standard language", "Multimodal Input: Allow users to interact not just with text, but also with voice and images, with the AI processing the input regardless of the language used."],
+                "skills": ["AI (NLP, NLU)", "Translation APIs (Google/Microsoft)", "Web Dev", "Voice-to-Text/Text-to-Speech", "Computer Vision", "Chatbot Frameworks (Rasa)"],
+                "impact": 7, "metrics": ["Support seamless conversation in over 10 major Indian languages", "Achieve a 90% user satisfaction rate for query resolution across all languages."]
+            },
+            {
+                "id": 100, "ministry": "AICTE", "title": "Develop computer programs (in any language, preferably Python) to identify the design principles behind the Kolam designs and recreate the kolams.", "simplified": "Develop a program to identify the design principles of Kolam art and recreate them.", "category": "Software", "domain": "Heritage & Culture", "difficulty": "Hard", "potential": "High",
+                "ideas": ["'Kolam AI Tutor': The AI not only generates new designs but provides a step-by-step animated guide on how to draw them, and can even analyze a user's attempt via camera", "Generative Adversarial Network (GAN) for Kolam: Train a GAN on thousands of Kolam designs to allow it to generate new, original Kolam art that adheres to the traditional rules", "Mathematical Rule Extractor: An algorithm that can analyze an image of a Kolam and reverse-engineer its mathematical principles, such as its dot grid, symmetry, and line logic."],
+                "skills": ["AI (Computer Vision, GANs)", "Mathematics (Graph Theory, L-systems)", "Python (OpenCV, TensorFlow/PyTorch)", "GUI Development (Tkinter/PyQt)", "Computational Creativity"],
+                "impact": 7, "metrics": ["Generate an infinite number of aesthetically pleasing, original Kolam designs", "Accurately extract the underlying dot grid and rules from an image with 95% success."]
+            },
+            {
+                "id": 101, "ministry": "Ministry of Tribal Affairs (MoTA)", "title": "Development of AI-powered FRA Atlas and WebGIS-based Decision Support System (DSS) for Integrated Monitoring of Forest Rights Act (FRA) Implementation.", "simplified": "Develop an AI-powered Atlas and GIS Decision Support System to monitor the Forest Rights Act.", "category": "Software", "domain": "Miscellaneous", "difficulty": "Hard", "potential": "High",
+                "ideas": ["Deforestation & Encroachment Alerts: An AI uses satellite imagery to monitor FRA land boundaries and automatically flags illegal deforestation or encroachment, sending alerts to authorities", "Community Forest Resource (CFR) Potential Mapping: The AI analyzes forest cover, biodiversity, and community data to identify and map potential areas that qualify for CFR rights under the FRA", "Historical Claim Verification: The system uses AI to analyze historical satellite images and survey maps to help verify the long-term inhabitation claims made by tribal communities."],
+                "skills": ["AI/ML (Computer Vision, Change Detection)", "GIS (QGIS, ArcGIS)", "Data Science", "Web Dev (for the DSS dashboard)", "Remote Sensing (Sentinel/Landsat data)", "Geospatial Databases (PostGIS)"],
+                "impact": 9, "metrics": ["Reduce illegal encroachment on FRA lands by 40%", "Accelerate the processing and verification of FRA claims by 50%."]
+            }
+        ];
+        
+        function renderCards(data) {
+            cardGrid.innerHTML = '';
+            data.forEach(challenge => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.id = challenge.id;
+
+                const difficultyClass = `difficulty-${challenge.difficulty.toLowerCase()}`;
+                const categoryClass = `category-${challenge.category.toLowerCase()}`;
+
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-id">#${challenge.id}</div>
+                            <div class="ministry">${challenge.ministry}</div>
+                            <h2 class="title">${challenge.title}</h2>
+                            <div class="tags">
+                                <span class="tag ${categoryClass}">${challenge.category}</span>
+                                <span class="tag ${difficultyClass}">${challenge.difficulty}</span>
+                            </div>
+                            <div class="impact-score">
+                                <div class="impact-score-label">
+                                    <span>Real-World Impact</span>
+                                    <span>${challenge.impact}/10</span>
+                                </div>
+                                <div class="impact-score-bar-container">
+                                    <div class="impact-score-bar" style="width: ${challenge.impact * 10}%"></div>
+                                </div>
+                            </div>
+                            <div class="view-details-prompt">Click to View Details</div>
+                        </div>
+                        <div class="card-back">
+                            <h3>${icons.idea} Creative Idea Examples</h3>
+                            <ul class="detail-list">${challenge.ideas.map(idea => `<li>${idea}</li>`).join('')}</ul>
+                            
+                            <h3>${icons.skills} Expanded Tech Stack</h3>
+                            <ul class="skills-list">${challenge.skills.map(skill => `<li>${skill}</li>`).join('')}</ul>
+                            
+                            <h3>${icons.metrics} Key Success Metrics</h3>
+                            <ul class="detail-list">${challenge.metrics.map(metric => `<li>${metric}</li>`).join('')}</ul>
+                        </div>
+                    </div>
+                `;
+                cardGrid.appendChild(card);
+            });
+
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('is-flipped');
+                });
+            });
+        }
+        
+        function populateFilters() {
+            const categories = [...new Set(challenges.map(c => c.category))].sort();
+            const domains = [...new Set(challenges.map(c => c.domain))].sort();
+            const ministries = [...new Set(challenges.map(c => c.ministry))].sort();
+
+            categories.forEach(cat => filterCategorySelect.innerHTML += `<option value="${cat}">${cat}</option>`);
+            domains.forEach(dom => filterDomainSelect.innerHTML += `<option value="${dom}">${dom}</option>`);
+            ministries.forEach(min => filterMinistrySelect.innerHTML += `<option value="${min}">${min}</option>`);
+        }
+        
+        function applyFiltersAndSort() {
+            let filteredData = [...challenges];
+
+            const category = filterCategorySelect.value;
+            const domain = filterDomainSelect.value;
+            const ministry = filterMinistrySelect.value;
+            const sortBy = sortBySelect.value;
+
+            if (category !== 'all') {
+                filteredData = filteredData.filter(c => c.category === category);
+            }
+            if (domain !== 'all') {
+                filteredData = filteredData.filter(c => c.domain === domain);
+            }
+            if (ministry !== 'all') {
+                filteredData = filteredData.filter(c => c.ministry === ministry);
+            }
+
+            const difficultyMap = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
+            const potentialMap = { 'Low': 1, 'Medium': 2, 'High': 3 };
+
+            switch (sortBy) {
+                case 'impact-hl': filteredData.sort((a, b) => b.impact - a.impact); break;
+                case 'impact-lh': filteredData.sort((a, b) => a.impact - b.impact); break;
+                case 'difficulty-eh': filteredData.sort((a, b) => difficultyMap[a.difficulty] - difficultyMap[b.difficulty]); break;
+                case 'difficulty-he': filteredData.sort((a, b) => difficultyMap[b.difficulty] - difficultyMap[a.difficulty]); break;
+                case 'potential-hl': filteredData.sort((a, b) => potentialMap[b.potential] - potentialMap[a.potential]); break;
+            }
+
+            renderCards(filteredData);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateFilters();
+            applyFiltersAndSort();
+
+            sortBySelect.addEventListener('change', applyFiltersAndSort);
+            filterCategorySelect.addEventListener('change', applyFiltersAndSort);
+            filterDomainSelect.addEventListener('change', applyFiltersAndSort);
+            filterMinistrySelect.addEventListener('change', applyFiltersAndSort);
+        });
+    </script>
+</body>
+</html>
