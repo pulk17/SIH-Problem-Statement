@@ -345,10 +345,18 @@
             }
             
             .controls { 
-                flex-direction: column; 
-                align-items: stretch;   
-                gap: 1.2rem; 
+                display: block;     /* Change layout to simple block stacking */
+                padding: 1.2rem;    /* Adjust padding for mobile */
             }
+
+            .control-group {
+                margin-bottom: 1rem; /* Add space between stacked dropdowns */
+            }
+
+            .control-group:last-child {
+                margin-bottom: 0;   /* Remove margin from the last item */
+            }
+            /* === END FIX === */
 
             .card-grid { 
                 grid-template-columns: 1fr; 
