@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIH Problem Statements</title>
+    <title>Project Innovation Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -108,8 +108,6 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23BDBDBD' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 1rem center;
-            
-            width: 100%; 
             text-overflow: ellipsis;
         }
         
@@ -129,7 +127,6 @@
             gap: 2rem;
         }
 
-        /* ### DEFINITIVE CARD FLIP STYLES ### */
         .card {
             background-color: transparent;
             height: 450px;
@@ -177,14 +174,13 @@
         .card-back::-webkit-scrollbar-track { background: transparent; }
         .card-back::-webkit-scrollbar-thumb { background-color: var(--accent-glow-start); border-radius: 6px; }
 
-        /* Card Front Content */
         .card-id {
             position: absolute;
             top: 1rem;
             right: 1.5rem;
             font-size: 1.5rem;
             font-weight: 800;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.3);
             z-index: 0;
         }
 
@@ -264,7 +260,6 @@
             opacity: 0.7;
         }
 
-        /* Card Back Content */
         .card-back h3 {
             font-size: 1.1rem;
             font-weight: 700;
@@ -345,18 +340,16 @@
             }
             
             .controls { 
-                display: block;     /* Change layout to simple block stacking */
-                padding: 1.2rem;    /* Adjust padding for mobile */
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1.2rem; 
+                padding: 1.2rem;
             }
 
             .control-group {
-                margin-bottom: 1rem; /* Add space between stacked dropdowns */
+                /* This aggressively forces the element to shrink, overriding its content's desire to expand. */
+                min-width: 0;
             }
-
-            .control-group:last-child {
-                margin-bottom: 0;   /* Remove margin from the last item */
-            }
-            /* === END FIX === */
 
             .card-grid { 
                 grid-template-columns: 1fr; 
@@ -373,7 +366,7 @@
 
     <nav class="controls">
         <div class="control-group">
-            <label for="sort-by">Sort By</label>
+            <label for="sort-by">SORT BY</label>
             <select id="sort-by">
                 <option value="impact-hl">Impact (High to Low)</option>
                 <option value="impact-lh">Impact (Low to High)</option>
@@ -383,19 +376,19 @@
             </select>
         </div>
         <div class="control-group">
-            <label for="filter-category">Filter by Category</label>
+            <label for="filter-category">FILTER BY CATEGORY</label>
             <select id="filter-category">
                 <option value="all">All</option>
             </select>
         </div>
         <div class="control-group">
-            <label for="filter-domain">Filter by Domain</label>
+            <label for="filter-domain">FILTER BY DOMAIN</label>
             <select id="filter-domain">
                 <option value="all">All</option>
             </select>
         </div>
         <div class="control-group">
-            <label for="filter-ministry">Filter by Ministry</label>
+            <label for="filter-ministry">FILTER BY MINISTRY</label>
             <select id="filter-ministry">
                 <option value="all">All</option>
             </select>
@@ -1133,4 +1126,4 @@
         });
     </script>
 </body>
-</html>
+</html>    
